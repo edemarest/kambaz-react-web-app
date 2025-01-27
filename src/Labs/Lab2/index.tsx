@@ -19,6 +19,7 @@ import BootstrapForms from "./BootstrapForms.tsx";
 import BootstrapNavigation from "./BootstrapNavigation.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
+console.log("Lab2 component is rendering!");
 
 export default function Lab2() {
   return (

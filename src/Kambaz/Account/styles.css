@@ -1,0 +1,109 @@
+#wd-signin-screen, #wd-signup-screen {
+  max-width: 350px;
+  margin: auto;
+  padding: 20px;
+}
+
+.wd-signin-title, .wd-signup-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.wd-signin-form, .wd-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wd-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.wd-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.wd-signin-btn, .wd-signup-btn {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.wd-signin-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.wd-signup-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.wd-signin-btn:hover {
+  background-color: #0056b3;
+}
+
+.wd-signup-btn:hover {
+  background-color: #218838;
+}
+
+.wd-signup-link, .wd-signin-link {
+  text-align: center;
+  display: block;
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #007bff;
+}
+
+.wd-signup-link:hover, .wd-signin-link:hover {
+  text-decoration: underline;
+}
+
+#wd-account-navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.wd-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #c0392b; 
+  padding-left: 10px;
+  transition: color 0.3s ease;
+}
+
+.wd-nav-bar {
+  width: 4px;
+  height: 24px; 
+  background-color: transparent;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.wd-active-bar {
+  background-color: black;
+}
+
+.wd-active {
+  color: black;
+}
+

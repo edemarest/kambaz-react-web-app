@@ -1,101 +1,111 @@
+import { Form, Button, Table, Card } from "react-bootstrap";
+import "./styles.css";
+
 export default function AssignmentEditor() {
-    return (
-        <div id="wd-assignments-editor">
-            <label htmlFor="wd-name">Assignment Name</label>
-            <input id="wd-name" value="A1 - ENV + HTML" /><br /><br />
-            <textarea id="wd-description">
-                The assignment is available online Submit a link to the landing page of
-                your Web application running on Netlify. The landing page should include
-                the following: Your full name and section Links to each of the lab assignments
-                Link to the Kanbas application Links to all relevant source code repositories
-                The Kanbas application should include a link to navigate back to the landing page.
-            </textarea>
-            <br />
-            <table>
-                <tbody>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-points">Points</label>
-                        </td>
-                        <td>
-                            <input id="wd-points" value={100} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-group">Assignment Group</label>
-                        </td>
-                        <td>
-                            <select id="wd-group">
-                                <option>ASSIGNMENTS</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-display-grade-as">Display Grade as</label>
-                        </td>
-                        <td>
-                            <select id="wd-display-grade-as">
-                                <option>Percentage</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-submission-type">Submission Type</label>
-                        </td>
-                        <td>
-                            <select id="wd-submission-type">
-                                <option>Online</option>
-                            </select>
-                            <div>
-                                <input type="checkbox" id="wd-text-entry" />
-                                <label htmlFor="wd-text-entry">Text Entry</label><br />
-                                <input type="checkbox" id="wd-website-url" />
-                                <label htmlFor="wd-website-url">Website URL</label><br />
-                                <input type="checkbox" id="wd-media-recordings" />
-                                <label htmlFor="wd-media-recordings">Media Recordings</label><br />
-                                <input type="checkbox" id="wd-student-annotation" />
-                                <label htmlFor="wd-student-annotation">Student Annotation</label><br />
-                                <input type="checkbox" id="wd-file-upload" />
-                                <label htmlFor="wd-file-upload">File Uploads</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-assign-to">Assign To</label>
-                        </td>
-                        <td>
-                            <input id="wd-assign-to" value="Everyone" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-due-date">Due</label>
-                        </td>
-                        <td>
-                            <input id="wd-due-date" type="date" value="2024-05-13" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" valign="top">
-                            <label htmlFor="wd-available-from">Available from</label>
-                        </td>
-                        <td>
-                            <input id="wd-available-from" type="date" value="2024-05-06" />
-                            <label htmlFor="wd-available-until">Until</label>
-                            <input id="wd-available-until" type="date" value="2024-05-20" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr />
-            <div>
-                <button>Cancel</button>
-                <button>Save</button>
-            </div>
-        </div>
-    );
+  return (
+    <div id="wd-assignments-editor">
+      <Form.Group controlId="wd-name">
+        <Form.Label>Assignment Name</Form.Label>
+        <Form.Control type="text" defaultValue="A1 - ENV + HTML" />
+      </Form.Group>
+
+      <Form.Group controlId="wd-description">
+        <Form.Control
+          as="textarea"
+          rows={5}
+          placeholder="The assignment is available online. Submit a link to the landing page of your Web application running on Netlify. 
+
+The landing page should include the following:
+• Your full name and section
+• Links to each of the lab assignments
+• Link to the Kanbas application
+• Links to all relevant source code repositories
+
+The Kanbas application should include a link to navigate back to the landing page."
+        />
+      </Form.Group>
+
+      <Table borderless>
+        <tbody>
+          {[
+            { label: "Points", type: "number", defaultValue: "100" },
+            { label: "Assignment Group", type: "select", options: ["ASSIGNMENTS"], defaultValue: "ASSIGNMENTS" },
+            { label: "Display Grade as", type: "select", options: ["Percentage"], defaultValue: "Percentage" }
+          ].map(({ label, type, defaultValue, options }, index) => (
+            <tr key={index}>
+              <td className="wd-label">
+                <Form.Label>{label}</Form.Label>
+              </td>
+              <td>
+                {options ? (
+                  <Form.Select defaultValue={defaultValue}>
+                    {options.map((option, i) => <option key={i}>{option}</option>)}
+                  </Form.Select>
+                ) : (
+                  <Form.Control type={type} defaultValue={defaultValue} />
+                )}
+              </td>
+            </tr>
+          ))}
+
+          <tr>
+            <td className="wd-label">
+              <Form.Label>Submission Type</Form.Label>
+            </td>
+            <td>
+              <Card className="wd-rounded-container">
+                <Form.Select defaultValue="Online" className="mb-2">
+                  <option>Online</option>
+                </Form.Select>
+                <Form.Label className="wd-subtitle">Online Entry Options</Form.Label>
+                <div className="wd-checkbox-group">
+                  {["Text Entry", "Website URL", "Media Recordings", "Student Annotation", "File Uploads"].map((label, i) => (
+                    <Form.Check
+                      type="checkbox"
+                      key={i}
+                      label={label}
+                      defaultChecked={label === "Website URL"}
+                      className="form-check"
+                    />
+                  ))}
+                </div>
+              </Card>
+            </td>
+          </tr>
+
+          <tr>
+            <td className="wd-label">
+              <Form.Label>Assign</Form.Label>
+            </td>
+            <td>
+              <Card className="wd-rounded-container">
+                <Form.Label className="wd-subtitle">Assign to</Form.Label>
+                <Form.Control type="text" defaultValue="Everyone" />
+                <Form.Label className="wd-subtitle">Due</Form.Label>
+                <Form.Control type="date" defaultValue="2024-05-13" />
+                <div className="d-flex wd-date-container">
+                  {[
+                    { label: "Available From", defaultValue: "2024-05-06" },
+                    { label: "Until", defaultValue: "2024-05-20" }
+                  ].map(({ label, defaultValue }, i) => (
+                    <div key={i} className="wd-date-input">
+                      <Form.Label className="wd-subtitle">{label}</Form.Label>
+                      <Form.Control type="date" defaultValue={defaultValue} />
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
+
+      <hr />
+
+      <div className="wd-editor-actions">
+        <Button variant="light">Cancel</Button>
+        <Button variant="danger">Save</Button>
+      </div>
+    </div>
+  );
 }

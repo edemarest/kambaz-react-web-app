@@ -1,3 +1,5 @@
+import { Row, Col } from "react-bootstrap";
+
 export default function BootstrapGrids() {
   return (
     <div>

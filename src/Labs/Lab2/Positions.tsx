@@ -1,7 +1,6 @@
 export default function Positions() {
     return (
       <div>
-        {/* Relative Position Section */}
         <div id="wd-css-position-relative">
           <h2>Relative</h2>
           <div className="wd-bg-color-gray">
