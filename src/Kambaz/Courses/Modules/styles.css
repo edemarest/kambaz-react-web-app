@@ -1,0 +1,45 @@
+#wd-modules-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  #wd-add-module-btn {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  #wd-publish-all-btn {
+    background-color: #343a40;
+    border-color: #343a40;
+    color: white;
+  }
+  
+  #wd-publish-all-btn .text-success {
+    color: #28a745 !important;
+  }
+  
+  #wd-view-progress,
+  #wd-collapse-all {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #212529;
+  }
+  
+  #wd-view-progress:hover,
+  #wd-collapse-all:hover {
+    background-color: #e2e6ea;
+  }
+  
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-item .text-danger {
+    font-size: 1.2em;
+  }
+  

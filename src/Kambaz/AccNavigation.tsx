@@ -14,7 +14,7 @@ export default function KambazNavigation() {
         href="https://www.northeastern.edu/"
         className="list-group-item bg-black border-0 text-center"
       >
-        <img src="/images/NEU.png" width="75px" />
+        <img src="/images/logo.png" width="75px" />
       </a>
       <br />
 
