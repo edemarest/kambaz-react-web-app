@@ -53,7 +53,7 @@ export default function Dashboard() {
                 <Card.Body>
                   <Card.Title className="wd-dashboard-course-title">CS9101 Data Structures</Card.Title>
                   <Card.Text className="wd-dashboard-course-description">
-                    Algorithms & Data Structures
+                    Algorithms & Data
                   </Card.Text>
                   <Button variant="primary">Go</Button>
                 </Card.Body>
@@ -70,7 +70,7 @@ export default function Dashboard() {
                 <Card.Body>
                   <Card.Title className="wd-dashboard-course-title">CS2345 Empirical Research Methods</Card.Title>
                   <Card.Text className="wd-dashboard-course-description">
-                    Research Techniques & Methodologies
+                    Research & Methodologies
                   </Card.Text>
                   <Button variant="primary">Go</Button>
                 </Card.Body>
@@ -138,7 +138,7 @@ export default function Dashboard() {
                 <Card.Body>
                   <Card.Title className="wd-dashboard-course-title">CS3456 Computer Systems</Card.Title>
                   <Card.Text className="wd-dashboard-course-description">
-                    Architecture & Low-Level Programming
+                    Architecture & Programming
                   </Card.Text>
                   <Button variant="primary">Go</Button>
                 </Card.Body>
