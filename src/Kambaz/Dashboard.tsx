@@ -6,10 +6,10 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> 
       <hr />
-      <h2 id="wd-dashboard-published">Published Courses (12)</h2> 
+      <h2 id="wd-dashboard-published">Published Courses (8)</h2> 
       <hr />
       <div id="wd-dashboard-courses">
-        <Row xs={1} md={5} className="g-4">
+        <Row xs={1} md={4} className="g-4">
           {/* CS1234 React JS */}
           <Col className="wd-dashboard-course" style={{ width: "300px" }}>
             <Card>
@@ -60,9 +60,93 @@ export default function Dashboard() {
               </Link>
             </Card>
           </Col>
+
+          {/* CS2345 Empirical Research Methods */}
+          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
+            <Card>
+              <Link to="/Kambaz/Courses/2345/Home"
+                className="wd-dashboard-course-link text-decoration-none text-dark">
+                <Card.Img variant="top" src="/images/dash.png" width="100%" height={160} />
+                <Card.Body>
+                  <Card.Title className="wd-dashboard-course-title">CS2345 Empirical Research Methods</Card.Title>
+                  <Card.Text className="wd-dashboard-course-description">
+                    Research Techniques & Methodologies
+                  </Card.Text>
+                  <Button variant="primary">Go</Button>
+                </Card.Body>
+              </Link>
+            </Card>
+          </Col>
+
+          {/* CS6789 Software Engineering */}
+          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
+            <Card>
+              <Link to="/Kambaz/Courses/6789/Home"
+                className="wd-dashboard-course-link text-decoration-none text-dark">
+                <Card.Img variant="top" src="/images/dash.png" width="100%" height={160} />
+                <Card.Body>
+                  <Card.Title className="wd-dashboard-course-title">CS6789 Software Engineering</Card.Title>
+                  <Card.Text className="wd-dashboard-course-description">
+                    Software Development Lifecycle
+                  </Card.Text>
+                  <Button variant="primary">Go</Button>
+                </Card.Body>
+              </Link>
+            </Card>
+          </Col>
+
+          {/* CS4321 Human Computer Interaction */}
+          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
+            <Card>
+              <Link to="/Kambaz/Courses/4321/Home"
+                className="wd-dashboard-course-link text-decoration-none text-dark">
+                <Card.Img variant="top" src="/images/dash.png" width="100%" height={160} />
+                <Card.Body>
+                  <Card.Title className="wd-dashboard-course-title">CS4321 Human Computer Interaction</Card.Title>
+                  <Card.Text className="wd-dashboard-course-description">
+                    User Experience & Design
+                  </Card.Text>
+                  <Button variant="primary">Go</Button>
+                </Card.Body>
+              </Link>
+            </Card>
+          </Col>
+
+          {/* CS8765 Object Oriented Programming */}
+          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
+            <Card>
+              <Link to="/Kambaz/Courses/8765/Home"
+                className="wd-dashboard-course-link text-decoration-none text-dark">
+                <Card.Img variant="top" src="/images/dash.png" width="100%" height={160} />
+                <Card.Body>
+                  <Card.Title className="wd-dashboard-course-title">CS8765 Object Oriented Programming</Card.Title>
+                  <Card.Text className="wd-dashboard-course-description">
+                    OOP Principles & Design
+                  </Card.Text>
+                  <Button variant="primary">Go</Button>
+                </Card.Body>
+              </Link>
+            </Card>
+          </Col>
+
+          {/* CS3456 Computer Systems */}
+          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
+            <Card>
+              <Link to="/Kambaz/Courses/3456/Home"
+                className="wd-dashboard-course-link text-decoration-none text-dark">
+                <Card.Img variant="top" src="/images/dash.png" width="100%" height={160} />
+                <Card.Body>
+                  <Card.Title className="wd-dashboard-course-title">CS3456 Computer Systems</Card.Title>
+                  <Card.Text className="wd-dashboard-course-description">
+                    Architecture & Low-Level Programming
+                  </Card.Text>
+                  <Button variant="primary">Go</Button>
+                </Card.Body>
+              </Link>
+            </Card>
+          </Col>
         </Row>
       </div>
     </div>
   );
 }
-
