@@ -16,7 +16,7 @@ export default function Dashboard() {
         <Row xs={1} md={4} className="g-4">
           {courses.map((course) => (
             <Col key={course._id} className="wd-dashboard-course" style={{ width: "300px" }}>
-              <Card className="h-100 d-flex flex-column"> {/* Ensures uniform height */}
+              <Card className="h-100 d-flex flex-column"> 
                 <Link to={`/Kambaz/Courses/${course._id}/Home`}
                   className="wd-dashboard-course-link text-decoration-none text-dark d-flex flex-column h-100">
                   <Card.Img variant="top" src="/images/dash.png" width="100%" height={160} />
@@ -25,7 +25,6 @@ export default function Dashboard() {
                     <Card.Text className="wd-dashboard-course-description">
                       {course.description}
                     </Card.Text>
-                    {/* Spacer to push button down */}
                     <div className="flex-grow-1"></div>
                     <Button variant="primary" className="wd-course-go-button">Go</Button>
                   </Card.Body>

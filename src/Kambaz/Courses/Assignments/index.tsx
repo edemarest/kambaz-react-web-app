@@ -1,10 +1,13 @@
-
 import { ListGroup, Button, InputGroup, FormControl } from "react-bootstrap";
 import { BsPlusLg, BsSearch, BsGripVertical } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { FaCheckCircle } from "react-icons/fa";
+import { useParams, Link } from "react-router-dom";
+import { assignments } from "../../Database";
 
 export default function Assignments() {
+  const { cid } = useParams();
+  const courseAssignments = assignments.filter((assignment) => assignment.course === cid);
   return (
     <div id="wd-assignments">
       <div className="wd-assignments-toolbar">
@@ -36,27 +39,27 @@ export default function Assignments() {
       </div>
 
       <ListGroup className="mt-3">
-        {[
-          { id: 123, title: "A1 - ENV + HTML", available: "May 6", due: "May 13" },
-          { id: 124, title: "A2 - CSS Basics", available: "May 10", due: "May 20" },
-          { id: 125, title: "A3 - JavaScript Basics", available: "May 15", due: "May 27" },
-        ].map(({ id, title, available, due }) => (
-          <ListGroup.Item key={id} className="wd-assignment-list-item">
-            <div className="wd-assignment-left">
-              <BsGripVertical className="text-muted" />
-              <FaCheckCircle className="text-success" />
-              <div>
-                <a href={`#/Kambaz/Courses/1234/Assignments/${id}`} className="wd-assignment-link">
-                  {title}
-                </a>
-                <div className="wd-assignment-details">
-                  Multiple Modules | Not available until {available} at 12:00am | Due {due} at 11:59pm | 100 pts
+        {courseAssignments.length > 0 ? (
+          courseAssignments.map(({ _id, title }) => (
+            <ListGroup.Item key={_id} className="wd-assignment-list-item">
+              <div className="wd-assignment-left">
+                <BsGripVertical className="text-muted" />
+                <FaCheckCircle className="text-success" />
+                <div>
+                  <Link to={`/Kambaz/Courses/${cid}/Assignments/${_id}`} className="wd-assignment-link">
+                    {title}
+                  </Link>
+                  <div className="wd-assignment-details text-muted">
+                    Due Date: TBD | 100 pts
+                  </div>
                 </div>
               </div>
-            </div>
-            <IoEllipsisVertical className="wd-ellipsis-icon" />
-          </ListGroup.Item>
-        ))}
+              <IoEllipsisVertical className="wd-ellipsis-icon" />
+            </ListGroup.Item>
+          ))
+        ) : (
+          <p className="text-muted">No assignments available for this course.</p>
+        )}
       </ListGroup>
     </div>
   );

@@ -6,7 +6,6 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import LessonControlButtons from "./LessonControlButtons";
 import { BsGripVertical } from "react-icons/bs";
 
-// Define Module & Lesson Types
 interface Lesson {
   _id: string;
   name: string;

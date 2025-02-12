@@ -1,27 +1,30 @@
 import { Form, Button, Table, Card } from "react-bootstrap";
+import { useParams, Link } from "react-router-dom";
+import { assignments } from "../../Database"
 import "./styles.css";
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams();
+  const assignment = assignments.find((a) => a._id === aid && a.course === cid);
+
+  if (!assignment) {
+    return <p className="text-muted">Assignment not found.</p>;
+  }
+
   return (
     <div id="wd-assignments-editor">
       <Form.Group controlId="wd-name">
         <Form.Label>Assignment Name</Form.Label>
-        <Form.Control type="text" defaultValue="A1 - ENV + HTML" />
+        <Form.Control type="text" defaultValue={assignment.title} />
       </Form.Group>
 
       <Form.Group controlId="wd-description">
         <Form.Control
           as="textarea"
           rows={5}
-          placeholder="The assignment is available online. Submit a link to the landing page of your Web application running on Netlify. 
-
-The landing page should include the following:
-• Your full name and section
-• Links to each of the lab assignments
-• Link to the Kanbas application
-• Links to all relevant source code repositories
-
-The Kanbas application should include a link to navigate back to the landing page."
+          defaultValue={`The assignment is available online. Submit a link to the landing page of your Web application running on Netlify.\n
+The landing page should include the following:\n• Your full name and section\n• Links to each of the lab assignments\n• Link to the Kanbas application\n• Links to all relevant source code repositories\n
+The Kanbas application should include a link to navigate back to the landing page.`}
         />
       </Form.Group>
 
@@ -103,8 +106,12 @@ The Kanbas application should include a link to navigate back to the landing pag
       <hr />
 
       <div className="wd-editor-actions">
-        <Button variant="light">Cancel</Button>
-        <Button variant="danger">Save</Button>
+        <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
+          <Button variant="light">Cancel</Button>
+        </Link>
+        <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
+          <Button variant="danger">Save</Button>
+        </Link>
       </div>
     </div>
   );
