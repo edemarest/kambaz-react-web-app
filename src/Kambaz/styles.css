@@ -1,34 +1,62 @@
-body   {  margin: 0;  padding: 0;  }
-body * {  font-family: Arial, Helvetica, sans-serif;  }
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body * {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 @media (min-width: 768px) {
   #wd-kambaz .wd-main-content-offset {
     padding-left: 140px !important;
   }
 }
-.list-group.wd > .list-group-item.active {
-    color: black;
-    background-color: white;
-    border-left: 3px solid black !important;
-  }
-  .wd-top-right-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .wd-landing-button {
-    background-color: #cf0000;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .wd-landing-button:hover {
-    background-color: #0056b3;
-  }
-  
+
+.list-group.wd>.list-group-item.active {
+  color: black;
+  background-color: white;
+  border-left: 3px solid black !important;
+}
+
+.wd-top-right-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.wd-landing-button {
+  background-color: #cf0000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.wd-landing-button:hover {
+  background-color: #0056b3;
+}
+
+.wd-dashboard-course .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wd-dashboard-course .card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.wd-dashboard-course .flex-grow-1 {
+  flex-grow: 1;
+}
+
+.wd-course-go-button {
+  align-self: flex-start;
+  margin-top: auto;
+}

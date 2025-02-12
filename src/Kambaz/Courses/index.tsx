@@ -1,17 +1,29 @@
 import CourseNavigation from "./Navigation";
 import Modules from "./Modules";
-import {Route, Routes } from "react-router";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
-import { FaAlignJustify } from "react-icons/fa";
+import { courses } from "../Database";
+import { FaAlignJustify } from "react-icons/fa6";
+import { Route, Routes, useParams, useLocation } from "react-router";
 import PeopleTable from "./People/Table";
+
 export default function Courses() {
+  const { cid } = useParams();
+  const course = courses.find((course) => course._id === cid);
+  const { pathname } = useLocation();
+
+  const pathParts = pathname.split("/");
+  const section = pathParts.length > 4 ? pathParts[4].replace(/-/g, " ") : "Home";
+
   return (
     <div id="wd-courses">
       <h2 className="text-danger">
         <FaAlignJustify className="me-4 fs-4 mb-1" />
-        Course 1234 </h2> <hr />
+        {course && course.name} &gt; {section.charAt(0).toUpperCase() + section.slice(1)}
+      </h2>
+      <hr />
+      
       <div className="d-flex">
         <div className="d-none d-md-block">
           <CourseNavigation />
@@ -24,7 +36,9 @@ export default function Courses() {
             <Route path="Assignments/:aid" element={<AssignmentEditor />} />
             <Route path="People" element={<PeopleTable />} />
           </Routes>
-        </div></div>
-    </div >
+        </div>
+      </div>
+    </div>
   );
 }
+

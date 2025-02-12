@@ -19,7 +19,7 @@ import TemplateLiterals from "./TemplateLiterals";
 import TernaryOperator from "./TernaryOperator";
 import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
-import TodoList from "./todos/ToDoList";
+import TodoList from "./todos/TodoList";
 import TodoItem from "./todos/TodoItem";
 import Spreading from "./Spreading";
 import Destructing from "./Destructing";
