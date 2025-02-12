@@ -1,88 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
 
 export default function KambazNavigation() {
+  const { pathname } = useLocation();
+
+  const links = [
+    { label: "Dashboard", path: "/Kambaz/Dashboard", icon: AiOutlineDashboard, id: "wd-dashboard-link" },
+    { label: "Courses", path: "/Kambaz/Dashboard", icon: LiaBookSolid, id: "wd-course-link" },
+    { label: "Calendar", path: "/Kambaz/Calendar", icon: IoCalendarOutline, id: "wd-calendar-link" },
+    { label: "Inbox", path: "/Kambaz/Inbox", icon: FaInbox, id: "wd-inbox-link" },
+    { label: "Labs", path: "/Labs", icon: LiaCogSolid, id: "wd-labs-link" },
+  ];
+
   return (
     <div id="wd-kambaz-navigation" style={{ width: 120 }}
          className="list-group rounded-0 position-fixed bottom-0 top-0 d-none d-md-block bg-black z-2">
-      <a
-        id="wd-neu-link"
-        target="_blank"
-        href="https://www.northeastern.edu/"
-        className="list-group-item bg-black border-0 text-center"
-      >
+      
+      {/* NEU Logo Link */}
+      <a id="wd-neu-link" target="_blank" href="https://www.northeastern.edu/"
+         className="list-group-item bg-black border-0 text-center">
         <img src="/images/logo.png" width="75px" />
       </a>
       <br />
 
-      <Link
-        to="/Kambaz/Account"
-        id="wd-account-link"
-        className="list-group-item text-center border-0 bg-black text-white"
-      >
-        <FaRegCircleUser className="fs-1 text-white" />
+      {/* Account Link */}
+      <Link to="/Kambaz/Account" id="wd-account-link"
+            className={`list-group-item text-center border-0 bg-black 
+            ${pathname.includes("Account") ? "text-danger bg-white" : "text-white"}`}>
+        <FaRegCircleUser className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-white"}`} />
         <br />
         Account
       </Link>
       <br />
 
-      <Link
-        to="/Kambaz/Dashboard"
-        id="wd-dashboard-link"
-        className="list-group-item text-center border-0 bg-white text-danger"
-      >
-        <AiOutlineDashboard className="fs-1 text-danger" />
-        <br />
-        Dashboard
-      </Link>
-      <br />
-
-      <Link
-        to="/Kambaz/Dashboard"
-        id="wd-course-link"
-        className="list-group-item text-white bg-black text-center border-0"
-      >
-        <LiaBookSolid className="fs-1 text-danger" />
-        <br />
-        Courses
-      </Link>
-      <br />
-
-      <Link
-        to="/Kambaz/Calendar"
-        id="wd-calendar-link"
-        className="list-group-item text-white bg-black text-center border-0"
-      >
-        <IoCalendarOutline className="fs-1 text-warning" />
-        <br />
-        Calendar
-      </Link>
-      <br />
-
-      <Link
-        to="/Kambaz/Inbox"
-        id="wd-inbox-link"
-        className="list-group-item text-white bg-black text-center border-0"
-      >
-        <FaInbox className="fs-1 text-primary" />
-        <br />
-        Inbox
-      </Link>
-      <br />
-
-      <Link
-        to="/Labs"
-        id="wd-labs-link"
-        className="list-group-item text-white bg-black text-center border-0"
-      >
-        <LiaCogSolid className="fs-1 text-info" />
-        <br />
-        Labs
-      </Link>
-      <br />
+      {/* Navigation Links */}
+      {links.map(({ label, path, icon: Icon, id }) => (
+        <Link key={id} to={path} id={id}
+              className={`list-group-item text-center border-0 bg-black 
+              ${pathname.includes(label) ? "text-danger bg-white" : "text-white"}`}>
+          <Icon className={`fs-1 ${pathname.includes(label) ? "text-danger" : "text-white"}`} />
+          <br />
+          {label}
+        </Link>
+      ))}
     </div>
   );
 }
