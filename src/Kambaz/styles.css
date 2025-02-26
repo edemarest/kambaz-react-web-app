@@ -56,7 +56,7 @@ body * {
   flex-grow: 1;
 }
 
-.wd-course-go-button {
+.wd-course-go-button .wd-course-delete-button {
   align-self: flex-start;
   margin-top: auto;
 }

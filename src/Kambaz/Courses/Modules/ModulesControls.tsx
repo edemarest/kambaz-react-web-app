@@ -1,9 +1,13 @@
 import { FaPlus } from "react-icons/fa6";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Button, Dropdown } from "react-bootstrap";
+import ModuleEditor from "./ModuleEditor";
 import "./styles.css";
 
-export default function ModulesControls() {
+export default function ModulesControls(
+  { moduleName, setModuleName, addModule }:
+  { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }
+) {  
   return (
     <div id="wd-modules-controls" className="text-nowrap">
       <Button variant="light" size="lg" className="me-2 float-end" id="wd-view-progress">
@@ -35,10 +39,13 @@ export default function ModulesControls() {
         Collapse All
       </Button>
 
-      <Button variant="danger" size="lg" className="float-end" id="wd-add-module-btn">
+      <Button variant="danger" size="lg" className="float-end" id="wd-add-module-btn"
+              data-bs-toggle="modal" data-bs-target="#wd-add-module-dialog" >
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Module
       </Button>
+      <ModuleEditor dialogTitle="Add Module" moduleName={moduleName}
+                    setModuleName={setModuleName} addModule={addModule} />
     </div>
   );
 }

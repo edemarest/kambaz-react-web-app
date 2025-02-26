@@ -1,26 +1,40 @@
-import { Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./styles.css";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentUser } from "./reducer";
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state: any) => state.accountReducer.currentUser);
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/Kambaz/Account/Signin");
+    }
+  }, [currentUser, navigate]);
+
+  if (!currentUser) {
+    return null;
+  }
+
+  const signout = () => {
+    dispatch(setCurrentUser(null));
+    navigate("/Kambaz/Account/Signin");
+  };
+
   return (
     <div id="wd-profile-screen">
-      <h1 className="wd-profile-title">Profile</h1>
-      <div className="wd-profile-form">
-        <Form.Control defaultValue="alice" placeholder="username" className="wd-input" />
-        <Form.Control defaultValue="123" placeholder="password" type="password" className="wd-input" />
-        <Form.Control defaultValue="Alice" placeholder="First Name" className="wd-input" />
-        <Form.Control defaultValue="Wonderland" placeholder="Last Name" className="wd-input" />
-        <Form.Control defaultValue="2000-01-01" type="date" className="wd-input" />
-        <Form.Control defaultValue="alice@wonderland.com" type="email" className="wd-input" />
-        <Form.Select defaultValue="USER" className="wd-input">
-          <option value="USER">User</option>
-          <option value="ADMIN">Admin</option>
-          <option value="FACULTY">Faculty</option>
-          <option value="STUDENT">Student</option>
-        </Form.Select>
-        <Link to="/Kambaz/Account/Signin" className="btn wd-signout-btn">Signout</Link>
-      </div>
+      <h3>Profile</h3>
+      <p><strong>Username:</strong> {currentUser.username}</p>
+      <p><strong>First Name:</strong> {currentUser.firstName}</p>
+      <p><strong>Last Name:</strong> {currentUser.lastName}</p>
+      <p><strong>Email:</strong> {currentUser.email}</p>
+      <p><strong>Role:</strong> {currentUser.role}</p>
+
+      <button onClick={signout} className="btn btn-danger w-100" id="wd-signout-btn">
+        Sign out
+      </button>
     </div>
   );
 }

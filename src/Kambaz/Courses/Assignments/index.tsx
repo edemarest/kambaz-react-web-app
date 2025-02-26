@@ -1,13 +1,30 @@
-import { ListGroup, Button, InputGroup, FormControl } from "react-bootstrap";
+import { ListGroup, Button, InputGroup, FormControl, Modal } from "react-bootstrap";
 import { BsPlusLg, BsSearch, BsGripVertical } from "react-icons/bs";
-import { IoEllipsisVertical } from "react-icons/io5";
 import { FaCheckCircle } from "react-icons/fa";
 import { useParams, Link } from "react-router-dom";
-import { assignments } from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssignment } from "./assignmentsReducer";
+import { useState } from "react";
+import "./styles.css";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const courseAssignments = assignments.filter((assignment) => assignment.course === cid);
+  const dispatch = useDispatch();
+  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const isFaculty = currentUser?.role === "FACULTY";
+  const courseAssignments = assignments.filter((assignment: any) => assignment.course === cid);
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState<string | null>(null);
+
+  const handleDelete = () => {
+    if (selectedAssignment) {
+      dispatch(deleteAssignment(selectedAssignment));
+    }
+    setShowModal(false);
+  };
+
   return (
     <div id="wd-assignments">
       <div className="wd-assignments-toolbar">
@@ -18,14 +35,18 @@ export default function Assignments() {
           <FormControl placeholder="Search for Assignments" />
         </InputGroup>
 
-        <div className="wd-toolbar-buttons">
-          <Button className="wd-group-btn">
-            <BsPlusLg className="me-2" /> Group
-          </Button>
-          <Button className="wd-assignment-btn">
-            <BsPlusLg className="me-2" /> Assignment
-          </Button>
-        </div>
+        {isFaculty && ( 
+          <div className="wd-toolbar-buttons">
+            <Button className="wd-group-btn">
+              <BsPlusLg className="me-2" /> Group
+            </Button>
+            <Link to={`/Kambaz/Courses/${cid}/Assignments/New`}>
+              <Button className="wd-assignment-btn">
+                <BsPlusLg className="me-2" /> Assignment
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="wd-assignments-header">
@@ -33,34 +54,67 @@ export default function Assignments() {
           <BsGripVertical className="me-2" />
           ASSIGNMENTS <span className="text-muted">40% of Total</span>
         </h5>
-        <Button className="wd-add-assignment">
-          <BsPlusLg />
-        </Button>
+        {isFaculty && (
+          <Link to={`/Kambaz/Courses/${cid}/Assignments/New`}>
+            <Button className="wd-add-assignment">
+              <BsPlusLg />
+            </Button>
+          </Link>
+        )}
       </div>
 
       <ListGroup className="mt-3">
         {courseAssignments.length > 0 ? (
-          courseAssignments.map(({ _id, title }) => (
+          courseAssignments.map(({ _id, title }: any) => (
             <ListGroup.Item key={_id} className="wd-assignment-list-item">
               <div className="wd-assignment-left">
                 <BsGripVertical className="text-muted" />
                 <FaCheckCircle className="text-success" />
                 <div>
-                  <Link to={`/Kambaz/Courses/${cid}/Assignments/${_id}`} className="wd-assignment-link">
-                    {title}
-                  </Link>
+                  {isFaculty ? (
+                    <Link to={`/Kambaz/Courses/${cid}/Assignments/${_id}`} className="wd-assignment-link">
+                      {title}
+                    </Link>
+                  ) : (
+                    <Link to={`/Kambaz/Courses/${cid}/Assignments/View/${_id}`} className="wd-assignment-link">
+                      {title}
+                    </Link>
+                  )}
                   <div className="wd-assignment-details text-muted">
                     Due Date: TBD | 100 pts
                   </div>
                 </div>
               </div>
-              <IoEllipsisVertical className="wd-ellipsis-icon" />
+
+              {isFaculty && ( 
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedAssignment(_id);
+                    setShowModal(true);
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
             </ListGroup.Item>
           ))
         ) : (
           <p className="text-muted">No assignments available for this course.</p>
         )}
       </ListGroup>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this assignment?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+          <Button variant="danger" onClick={handleDelete}>Delete</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

@@ -16,7 +16,6 @@ export default function Labs() {
   return (
     <Provider store={store}>
     <div>
-      {/* Landing Page Button */}
       <div className="wd-top-right-button">
         <button onClick={goToLandingPage} className="wd-landing-button">
           Landing Page

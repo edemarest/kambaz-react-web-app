@@ -89,7 +89,6 @@ export default function Lab2() {
           </p>
         </div>
 
-        {/* Including all other components */}
         <BackgroundColors />
         <Borders />
         <Padding />
