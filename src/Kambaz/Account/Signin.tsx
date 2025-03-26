@@ -3,41 +3,37 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setCurrentUser } from "./reducer";
 import { useDispatch } from "react-redux";
-import * as db from "../Database";
+import * as client from "./client";
 
 export default function Signin() {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const signin = () => {
-    console.log("Attempting to sign in with:", credentials);
-    const user = db.users.find(
-      (u) => u.username === credentials.username && u.password === credentials.password
-    );
-
-    if (!user) {
-      alert("Invalid username or password.");
-      return;
+  const signin = async () => {
+    try {
+      const user = await client.signin(credentials);
+      dispatch(setCurrentUser(user));
+      navigate("/Kambaz/Dashboard");
+    } catch (err) {
+      setErrorMessage("Invalid username or password.");
     }
-
-    dispatch(setCurrentUser(user));
-    console.log("User signed in:", user);
-    navigate("/Kambaz/Dashboard");
   };
 
   return (
     <div id="wd-signin-screen">
       <h1 className="wd-signin-title">Sign In</h1>
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
       <input
-        value={credentials.username} 
+        value={credentials.username}
         onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
         className="form-control wd-input"
         placeholder="Username"
         id="wd-username"
       />
       <input
-        value={credentials.password} 
+        value={credentials.password}
         onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
         className="form-control wd-input"
         placeholder="Password"

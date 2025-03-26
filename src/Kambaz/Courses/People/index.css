@@ -1,0 +1,8 @@
+#wd-people-table {
+    padding: 1rem;
+}
+
+#wd-people-table td,
+#wd-people-table th {
+    vertical-align: middle;
+}

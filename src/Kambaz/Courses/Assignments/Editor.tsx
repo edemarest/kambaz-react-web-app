@@ -1,39 +1,64 @@
 import { Form, Button, Table, Card } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addAssignment, updateAssignment } from "./assignmentsReducer";
+import { useEffect, useState } from "react";
+import * as client from "./client";
+
+interface Assignment {
+  _id: string;
+  title: string;
+  description: string;
+  points: number;
+  dueDate: string;
+  availableFrom: string;
+  availableUntil: string;
+  course: string;
+}
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
-  const existingAssignment = assignments.find((a: any) => a._id === aid && a.course === cid);
+  const [assignment, setAssignment] = useState<any>(null);
+  const [assignments, setAssignments] = useState<any[]>([]);
 
-  const [assignment, setAssignment] = useState(
-    existingAssignment || {
-      _id: `A${Math.floor(Math.random() * 1000)}`,
-      title: "",
-      description: `The assignment is available online. Submit a link to the landing page of your Web application running on Netlify.\n
+  const loadAssignments = async () => {
+    const data = await client.fetchAssignmentsForCourse(cid!);
+    setAssignments(data);
+
+    const found: Assignment | undefined = data.find((a: Assignment) => a._id === aid);
+    if (found) {
+      setAssignment(found);
+    } else {
+      setAssignment({
+        _id: `A${Math.floor(Math.random() * 1000)}`,
+        title: "",
+        description: `The assignment is available online. Submit a link to the landing page of your Web application running on Netlify.\n
 The landing page should include the following:\n• Your full name and section\n• Links to each of the lab assignments\n• Link to the Kanbas application\n• Links to all relevant source code repositories\n
 The Kanbas application should include a link to navigate back to the landing page.`,
-      points: 100,
-      dueDate: "2024-05-13",
-      availableFrom: "2024-05-06",
-      availableUntil: "2024-05-20",
-      course: cid,
+        points: 100,
+        dueDate: "2024-05-13",
+        availableFrom: "2024-05-06",
+        availableUntil: "2024-05-20",
+        course: cid,
+      });
     }
-  );
+  };
 
-  const handleSave = () => {
-    if (existingAssignment) {
-      dispatch(updateAssignment(assignment));
+  const handleSave = async () => {
+    if (!assignment) return;
+
+    if (assignments.find((a) => a._id === aid)) {
+      await client.updateAssignment(assignment._id, assignment);
     } else {
-      dispatch(addAssignment(assignment));
+      await client.createAssignment(cid!, assignment);
     }
     navigate(`/Kambaz/Courses/${cid}/Assignments`);
   };
+
+  useEffect(() => {
+    loadAssignments();
+  }, [cid, aid]);
+
+  if (!assignment) return null;
 
   return (
     <div id="wd-assignments-editor">

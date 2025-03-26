@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
-import * as db from "../Database";
-import { v4 as uuidv4 } from "uuid";
 import { Form, Button } from "react-bootstrap";
+import * as client from "./client";
 import "./styles.css";
 
 export default function Signup() {
@@ -18,51 +17,36 @@ export default function Signup() {
     role: "STUDENT",
   });
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const signup = () => {
+  const signup = async () => {
+    setErrorMessage(null);
     if (!newUser.username || !newUser.password || !newUser.email) {
-      alert("All fields are required.");
+      setErrorMessage("All fields are required.");
       return;
     }
     if (newUser.password !== newUser.verifyPassword) {
-      alert("Passwords do not match.");
+      setErrorMessage("Passwords do not match.");
       return;
     }
 
-    const existingUser = db.users.find((u) => u.username === newUser.username);
-    if (existingUser) {
-      alert("Username already exists.");
-      return;
+    try {
+      const user = await client.signup(newUser);
+      dispatch(setCurrentUser(user));
+      navigate("/Kambaz/Dashboard");
+    } catch (err: any) {
+      setErrorMessage("Signup failed: Username may already be taken.");
     }
-
-    const user = { 
-      _id: uuidv4(),
-      username: newUser.username,
-      password: newUser.password,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
-      role: newUser.role,
-      dob: "",
-      loginId: uuidv4(),
-      section: "A",
-      lastActivity: new Date().toISOString(),
-      totalActivity: "0",
-    };
-
-    db.users.push(user);
-    dispatch(setCurrentUser(user));
-    console.log("New user signed up:", user);
-
-    navigate("/Kambaz/Dashboard");
   };
 
   return (
     <div id="wd-signup-screen">
       <h1 className="wd-signup-title">Signup</h1>
       <div className="wd-signup-form">
+        {errorMessage && <div className="wd-error-message">{errorMessage}</div>}
         <Form.Control
           placeholder="Username"
           className="wd-input mb-2"

@@ -1,45 +1,65 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Card, Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Card, Row, Col, Alert } from "react-bootstrap";
+import * as client from "./client";
 import "./styles.css";
 
-export default function AssignmentViewer() {
+interface Assignment {
+  _id: string;
+  title: string;
+  description: string;
+  points: number;
+  dueDate: string;
+  availableFrom: string;
+  availableUntil: string;
+  course: string;
+}
+
+export default function AssignmentView() {
   const { cid, aid } = useParams();
-  const navigate = useNavigate();
-  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
+  const [assignment, setAssignment] = useState<Assignment | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  console.log("Course ID:", cid);
-  console.log("Assignment ID:", aid);
-  console.log("Assignments:", assignments);
+  const loadAssignment = async () => {
+    try {
+      setError(null);
+      const all = await client.fetchAssignmentsForCourse(cid!);
+      const found = all.find((a: Assignment) => a._id === aid);
+      setAssignment(found || null);
+    } catch (err) {
+      setError("Failed to load assignment. Please try again later.");
+    }
+  };
 
-  if (!assignments || assignments.length === 0) {
-    return <p className="text-muted">No assignments found. Please check your data source.</p>;
+  useEffect(() => {
+    loadAssignment();
+  }, [cid, aid]);
+
+  if (error) {
+    return <Alert variant="danger">{error}</Alert>;
   }
 
-  const assignment = assignments.find((a: any) => a._id === aid && a.course === cid);
-
-  if (!assignment) {
-    return <p className="text-muted">Assignment not found.</p>;
-  }
+  if (!assignment) return <p className="text-muted">Assignment not found.</p>;
 
   return (
-    <div id="wd-assignments-editor">
-      <h3>{assignment.title}</h3>
-      <Card className="wd-rounded-container">
-        <Card.Body>
-          <p><strong>Description:</strong></p>
-          <p>{assignment.description || "No description available."}</p>
+    <Card className="p-4 shadow-sm">
+      <h3 className="mb-3">{assignment.title}</h3>
+      <p>{assignment.description}</p>
 
-          <p><strong>Points:</strong> {assignment.points || "N/A"}</p>
-          <p><strong>Due Date:</strong> {assignment.dueDate || "TBD"}</p>
-          <p><strong>Available From:</strong> {assignment.availableFrom || "TBD"}</p>
-          <p><strong>Until:</strong> {assignment.availableUntil || "TBD"}</p>
-        </Card.Body>
-      </Card>
-
-      <Button variant="secondary" onClick={() => navigate(`/Kambaz/Courses/${cid}/Assignments`)}>
-        Back to Assignments
-      </Button>
-    </div>
+      <Row className="mt-4">
+        <Col md={4}>
+          <strong>Points:</strong>
+          <div>{assignment.points}</div>
+        </Col>
+        <Col md={4}>
+          <strong>Due Date:</strong>
+          <div>{assignment.dueDate}</div>
+        </Col>
+        <Col md={4}>
+          <strong>Available:</strong>
+          <div>{assignment.availableFrom} — {assignment.availableUntil}</div>
+        </Col>
+      </Row>
+    </Card>
   );
 }

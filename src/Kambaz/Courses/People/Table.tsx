@@ -1,13 +1,41 @@
-import { Table } from "react-bootstrap";
-import { FaUserCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { Table, Button } from "react-bootstrap";
+import { FaUserCircle, FaTrash, FaEdit } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { users, enrollments } from "../../Database";
+import { useSelector } from "react-redux";
+import * as usersClient from "../../Account/client";
+import * as enrollmentsClient from "../../Enrollments/client";
 
 export default function PeopleTable() {
   const { cid } = useParams();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-  const courseUsers = users.filter((usr) =>
-    enrollments.some((enrollment) => enrollment.user === usr._id && enrollment.course === cid)
+  const [users, setUsers] = useState<any[]>([]);
+  const [enrollments, setEnrollments] = useState<any[]>([]);
+  const isFaculty = currentUser?.role === "FACULTY";
+
+  const loadUsers = async () => {
+    const all = await usersClient.findAll();
+    setUsers(all);
+  };
+
+  const loadEnrollments = async () => {
+    const all = await enrollmentsClient.getUserEnrollments();
+    setEnrollments(all);
+  };
+
+  const handleDelete = async (userId: string) => {
+    await usersClient.remove(userId);
+    await loadUsers();
+  };
+
+  useEffect(() => {
+    loadUsers();
+    loadEnrollments();
+  }, []);
+
+  const enrolledUsers = users.filter((usr) =>
+    enrollments.some((e) => e.user === usr._id && e.course === cid)
   );
 
   return (
@@ -21,27 +49,41 @@ export default function PeopleTable() {
             <th>Role</th>
             <th>Last Activity</th>
             <th>Total Activity</th>
+            {isFaculty && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
-          {courseUsers.length > 0 ? (
-            courseUsers.map((user) => (
+          {enrolledUsers.length > 0 ? (
+            enrolledUsers.map((user) => (
               <tr key={user._id}>
-                <td className="wd-full-name text-nowrap">
+                <td className="text-nowrap">
                   <FaUserCircle className="me-2 fs-1 text-secondary" />
-                  <span className="wd-first-name">{user.firstName}</span>{" "}
-                  <span className="wd-last-name">{user.lastName}</span>
+                  {user.firstName} {user.lastName}
                 </td>
-                <td className="wd-login-id">{user.loginId}</td>
-                <td className="wd-section">{user.section}</td>
-                <td className="wd-role">{user.role}</td>
-                <td className="wd-last-activity">{user.lastActivity}</td>
-                <td className="wd-total-activity">{user.totalActivity}</td>
+                <td>{user.loginId}</td>
+                <td>{user.section}</td>
+                <td>{user.role}</td>
+                <td>{user.lastActivity}</td>
+                <td>{user.totalActivity}</td>
+                {isFaculty && (
+                  <td>
+                    <Button
+                      variant="danger"
+                      className="me-2"
+                      onClick={() => handleDelete(user._id)}
+                    >
+                      <FaTrash />
+                    </Button>
+                    <Button variant="secondary" disabled>
+                      <FaEdit />
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={6} className="text-muted text-center">
+              <td colSpan={7} className="text-center text-muted">
                 No users enrolled in this course.
               </td>
             </tr>

@@ -2,28 +2,38 @@ import { ListGroup, Button, InputGroup, FormControl, Modal } from "react-bootstr
 import { BsPlusLg, BsSearch, BsGripVertical } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import { useParams, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./assignmentsReducer";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import * as client from "./client";
 import "./styles.css";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const dispatch = useDispatch();
-  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const isFaculty = currentUser?.role === "FACULTY";
-  const courseAssignments = assignments.filter((assignment: any) => assignment.course === cid);
 
+  const [assignments, setAssignments] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState<string | null>(null);
 
-  const handleDelete = () => {
+  const loadAssignments = async () => {
+    const data = await client.fetchAssignmentsForCourse(cid!);
+    setAssignments(data);
+  };
+
+  const handleDelete = async () => {
     if (selectedAssignment) {
-      dispatch(deleteAssignment(selectedAssignment));
+      await client.deleteAssignment(selectedAssignment);
+      setAssignments(assignments.filter((a) => a._id !== selectedAssignment));
     }
     setShowModal(false);
   };
+
+  useEffect(() => {
+    loadAssignments();
+  }, [cid]);
+
+  const courseAssignments = assignments.filter((assignment: any) => assignment.course === cid);
 
   return (
     <div id="wd-assignments">
@@ -35,7 +45,7 @@ export default function Assignments() {
           <FormControl placeholder="Search for Assignments" />
         </InputGroup>
 
-        {isFaculty && ( 
+        {isFaculty && (
           <div className="wd-toolbar-buttons">
             <Button className="wd-group-btn">
               <BsPlusLg className="me-2" /> Group
@@ -65,7 +75,7 @@ export default function Assignments() {
 
       <ListGroup className="mt-3">
         {courseAssignments.length > 0 ? (
-          courseAssignments.map(({ _id, title }: any) => (
+          courseAssignments.map(({ _id, title, dueDate, points }: any) => (
             <ListGroup.Item key={_id} className="wd-assignment-list-item">
               <div className="wd-assignment-left">
                 <BsGripVertical className="text-muted" />
@@ -81,12 +91,12 @@ export default function Assignments() {
                     </Link>
                   )}
                   <div className="wd-assignment-details text-muted">
-                    Due Date: TBD | 100 pts
+                    Due Date: {dueDate || "TBD"} | {points ?? 100} pts
                   </div>
                 </div>
               </div>
 
-              {isFaculty && ( 
+              {isFaculty && (
                 <Button
                   variant="danger"
                   size="sm"
