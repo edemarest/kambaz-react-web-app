@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 export default function WorkingWithArrays() {
     const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;

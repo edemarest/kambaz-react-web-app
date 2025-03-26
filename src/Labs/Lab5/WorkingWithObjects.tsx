@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FormControl, FormCheck } from "react-bootstrap";
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 
