@@ -95,6 +95,7 @@ export default function Signup() {
           >
             <option value="STUDENT">Student</option>
             <option value="FACULTY">Faculty</option>
+            <option value="ADMIN">Admin</option>
           </Form.Select>
         </Form.Group>
 

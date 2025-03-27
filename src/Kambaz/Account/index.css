@@ -1,0 +1,7 @@
+input::placeholder {
+    color: #888;
+}
+
+input:focus {
+    box-shadow: 0 0 3px #aaa;
+}

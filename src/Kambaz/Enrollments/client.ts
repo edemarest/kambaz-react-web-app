@@ -4,6 +4,7 @@ const API_BASE = import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
 const ENROLLMENTS_API = `${API_BASE}/api`;
 
 const AXIOS_CONFIG = { withCredentials: true };
+axios.defaults.withCredentials = true;
 
 export const getUserEnrollments = async () => {
   const response = await axios.get(`${ENROLLMENTS_API}/enrollments`, AXIOS_CONFIG);

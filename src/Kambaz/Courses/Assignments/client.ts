@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
 const ASSIGNMENTS_API = `${API_BASE}/api`;
+axios.defaults.withCredentials = true;
 
 export const fetchAssignmentsForCourse = async (courseId: string) => {
   const response = await axios.get(`${ASSIGNMENTS_API}/courses/${courseId}/assignments`);

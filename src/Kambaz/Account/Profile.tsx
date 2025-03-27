@@ -88,6 +88,8 @@ export default function Profile() {
             <Form.Select value={formData.role} disabled>
               <option value="STUDENT">Student</option>
               <option value="FACULTY">Faculty</option>
+              <option value="ADMIN">Admin</option>
+              <option value="TA">Teaching Assistant</option>
             </Form.Select>
           </Form.Group>
 

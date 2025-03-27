@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
 const MODULES_API = `${API_BASE}/api`;
+axios.defaults.withCredentials = true;
 
 export const fetchModulesForCourse = async (courseId: string) => {
     const url = `${MODULES_API}/courses/${courseId}/modules`;
