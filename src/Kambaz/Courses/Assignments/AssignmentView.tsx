@@ -40,7 +40,11 @@ export default function AssignmentView() {
   }, [cid, aid]);
 
   if (loading) {
-    return <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>;
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
   }
 
   if (error) {
@@ -67,7 +71,9 @@ export default function AssignmentView() {
         </Col>
         <Col md={4}>
           <strong>Available:</strong>
-          <div>{assignment.availableFrom} — {assignment.availableUntil}</div>
+          <div>
+            {assignment.availableFrom} — {assignment.availableUntil}
+          </div>
         </Col>
       </Row>
     </Card>

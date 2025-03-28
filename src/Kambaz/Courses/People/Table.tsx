@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Button } from "react-bootstrap";
 import { FaUserCircle, FaTrash, FaEdit } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as usersClient from "../../Account/client";
 import PeopleDetails from "./Details";
 import { setCurrentUser } from "../../Account/reducer";
@@ -11,10 +11,14 @@ export default function PeopleTable({
   users = [],
   selectedUser,
   refreshUsers,
+  onSelectUser,
+  linkToUserDetails = true,
 }: {
   users?: any[];
   selectedUser?: any;
   refreshUsers?: () => void;
+  onSelectUser?: (user: any) => void;
+  linkToUserDetails?: boolean;
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch();
@@ -57,16 +61,39 @@ export default function PeopleTable({
           <tbody>
             {sortedUsers.length > 0 ? (
               sortedUsers.map((user) => {
-                const isCurrentUser = currentUser && currentUser._id === user._id;
-                const canEdit = currentUser?.role === "ADMIN" || isCurrentUser;
-
+                const isCurrentUser =
+                  currentUser && currentUser._id === user._id;
+                const canEdit = currentUser?.role === "ADMIN";
                 return (
-                  <tr key={user._id} className={isCurrentUser ? "table-success" : ""}>
+                  <tr
+                    key={user._id}
+                    className={isCurrentUser ? "table-success" : ""}
+                  >
                     <td className="text-nowrap">
-                      <Link to={`/Kambaz/Account/Users/${user._id}`} className="text-decoration-none">
-                        <FaUserCircle className="me-2 fs-1 text-secondary" />
-                        {user.firstName} {user.lastName}
-                      </Link>
+                      {linkToUserDetails ? (
+                        <span
+                          role="button"
+                          className="text-decoration-none"
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            navigate(`/Kambaz/Account/Users/${user._id}`)
+                          }
+                          title={`View details for ${user.firstName} ${user.lastName}`}
+                        >
+                          <FaUserCircle className="me-2 fs-1 text-secondary" />
+                          {user.firstName} {user.lastName}
+                        </span>
+                      ) : (
+                        <span
+                          role="button"
+                          className="text-decoration-none"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => onSelectUser?.(user)}
+                        >
+                          <FaUserCircle className="me-2 fs-1 text-secondary" />
+                          {user.firstName} {user.lastName}
+                        </span>
+                      )}
                     </td>
                     <td>{user.loginId}</td>
                     <td>{user.section}</td>
@@ -76,10 +103,19 @@ export default function PeopleTable({
                     <td>
                       {canEdit ? (
                         <div className="d-flex">
-                          <Button variant="danger" className="me-2" onClick={() => handleDelete(user._id)}>
+                          <Button
+                            variant="danger"
+                            className="me-2"
+                            onClick={() => handleDelete(user._id)}
+                          >
                             <FaTrash />
                           </Button>
-                          <Button variant="secondary" onClick={() => navigate(`/Kambaz/Account/Users/${user._id}`)}>
+                          <Button
+                            variant="secondary"
+                            onClick={() =>
+                              navigate(`/Kambaz/Account/Users/${user._id}`)
+                            }
+                          >
                             <FaEdit />
                           </Button>
                         </div>

@@ -5,11 +5,7 @@ import {
   FormControl,
   Modal,
 } from "react-bootstrap";
-import {
-  BsPlusLg,
-  BsSearch,
-  BsGripVertical,
-} from "react-icons/bs";
+import { BsPlusLg, BsSearch, BsGripVertical } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -36,7 +32,7 @@ export default function Assignments() {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState<string | null>(
-    null
+    null,
   );
 
   const loadAssignments = async () => {
@@ -103,10 +99,7 @@ export default function Assignments() {
       <ListGroup className="mt-3">
         {assignments.length > 0 ? (
           assignments.map(({ _id, title, dueDate, points }: Assignment) => (
-            <ListGroup.Item
-              key={_id}
-              className="wd-assignment-list-item"
-            >
+            <ListGroup.Item key={_id} className="wd-assignment-list-item">
               <div className="wd-assignment-left">
                 <BsGripVertical className="text-muted" />
                 <FaCheckCircle className="text-success" />

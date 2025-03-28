@@ -12,7 +12,7 @@ const todosSlice = createSlice({
   reducers: {
     addTodo: (state, action) => {
       const newTodos = [
-          ...state.todos,
+        ...state.todos,
         { ...action.payload, id: new Date().getTime().toString() },
       ];
       state.todos = newTodos;
@@ -24,7 +24,7 @@ const todosSlice = createSlice({
     },
     updateTodo: (state, action) => {
       const newTodos = state.todos.map((item) =>
-        item.id === action.payload.id ? action.payload : item
+        item.id === action.payload.id ? action.payload : item,
       );
       state.todos = newTodos;
       state.todo = { title: "" };

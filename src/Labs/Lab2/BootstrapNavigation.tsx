@@ -1,6 +1,5 @@
 import { Button, Card, Nav } from "react-bootstrap";
 
-
 export default function BootstrapNavigation() {
   return (
     <div>
@@ -17,14 +16,14 @@ export default function BootstrapNavigation() {
             <Nav.Link href="#/Labs/Lab2/Link2">Link 2</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="#/Labs/Lab2/Disabled" disabled>Disabled</Nav.Link>
+            <Nav.Link href="#/Labs/Lab2/Disabled" disabled>
+              Disabled
+            </Nav.Link>
           </Nav.Item>
         </Nav>
       </div>
       <div id="wd-css-navigating-with-cards">
-        <h2>
-          Cards
-        </h2>
+        <h2>Cards</h2>
         <Card style={{ width: "18rem" }}>
           <Card.Img variant="top" src="images/stacked.png" />
           <Card.Body>
@@ -36,7 +35,6 @@ export default function BootstrapNavigation() {
           </Card.Body>
         </Card>
       </div>
-
     </div>
   );
 }

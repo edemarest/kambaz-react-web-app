@@ -35,7 +35,7 @@ import { useSelector } from "react-redux";
 
 export default function Lab3() {
   const { todos } = useSelector((state: any) => state.todosReducer);
-  console.log('Hello World!');
+  console.log("Hello World!");
   return (
     <div id="wd-lab3">
       <h3>Lab 3</h3>
@@ -81,8 +81,10 @@ export default function Lab3() {
       <Square>4</Square>
       <br></br>
       <Highlight>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipitratione eaque illo minus cum, saepe totam
-        vel nihil repellat nemo explicabo excepturi consectetur. Modi omnis minus sequi maiores, provident voluptates.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipitratione
+        eaque illo minus cum, saepe totam vel nihil repellat nemo explicabo
+        excepturi consectetur. Modi omnis minus sequi maiores, provident
+        voluptates.
       </Highlight>
       <PathParameters />
       <hr />

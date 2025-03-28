@@ -55,29 +55,21 @@ export default function Users() {
   };
 
   useEffect(() => {
-    const restoreSession = async () => {
-      try {
-        const profile = await client.profile();
-      } catch (e) {
-        console.warn("Session not active or user not signed in.");
-      }
-    };
-
-    restoreSession();
     fetchUsers();
   }, []);
 
   return (
     <div>
-      <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
+      <button
+        onClick={createUser}
+        className="float-end btn btn-danger wd-add-people"
+      >
         <FaPlus className="me-2" />
         Users
       </button>
-
       <h3 style={{ textAlign: "center" }}>Users</h3>
 
       <div className="d-flex mb-3 gap-2">
-        {/* Search Bar */}
         <InputGroup className="w-50">
           <InputGroup.Text>
             <FaSearch />
@@ -89,7 +81,6 @@ export default function Users() {
           />
         </InputGroup>
 
-        {/* Role Filter Dropdown */}
         <select
           value={role}
           onChange={(e) => filterUsersByRole(e.target.value)}
@@ -107,6 +98,7 @@ export default function Users() {
         users={users}
         selectedUser={users.find((u) => u._id === uid)}
         refreshUsers={fetchUsers}
+        linkToUserDetails={true}
       />
     </div>
   );

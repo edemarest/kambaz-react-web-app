@@ -12,6 +12,7 @@ export default function TodoList() {
           <TodoItem todo={todo} />
         ))}
       </ul>
-      <hr/>
+      <hr />
     </div>
-);}
+  );
+}

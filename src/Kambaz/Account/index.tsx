@@ -19,13 +19,16 @@ export default function Account() {
             </td>
             <td valign="top" style={{ width: "100%" }}>
               <Routes>
-                <Route path="/" element={<Navigate to={currentUser ? "Profile" : "Signin"} />} />
+                <Route
+                  path="/"
+                  element={<Navigate to={currentUser ? "Profile" : "Signin"} />}
+                />
                 <Route path="Signin" element={<Signin />} />
                 <Route path="Profile" element={<Profile />} />
                 <Route path="Signup" element={<Signup />} />
                 <Route path="/Users" element={<Users />} />
                 <Route path="/Users/:uid" element={<Users />} />
-                </Routes>
+              </Routes>
             </td>
           </tr>
         </tbody>

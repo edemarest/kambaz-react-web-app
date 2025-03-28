@@ -13,7 +13,9 @@ const modulesSlice = createSlice({
       state.modules.push(action.payload);
     },
     updateModule: (state, action: PayloadAction<any>) => {
-      const index = state.modules.findIndex((m) => m._id === action.payload._id);
+      const index = state.modules.findIndex(
+        (m) => m._id === action.payload._id,
+      );
       if (index !== -1) {
         state.modules[index] = action.payload;
       }
@@ -24,5 +26,6 @@ const modulesSlice = createSlice({
   },
 });
 
-export const { setModules, addModule, updateModule, deleteModule } = modulesSlice.actions;
+export const { setModules, addModule, updateModule, deleteModule } =
+  modulesSlice.actions;
 export default modulesSlice.reducer;

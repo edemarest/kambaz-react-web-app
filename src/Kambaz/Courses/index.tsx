@@ -6,6 +6,8 @@ import Assignments from "./Assignments";
 import Home from "./Home";
 import Modules from "./Modules";
 import CourseNavigation from "./Navigation";
+import AssignmentEditor from "./Assignments/Editor";
+import AssignmentView from "./Assignments/AssignmentView";
 
 interface Enrollment {
   user: any;
@@ -80,7 +82,21 @@ export default function Courses({
           <Route path="Home" element={<Home />} />
           <Route path="Modules" element={<Modules />} />
           <Route path="Assignments" element={<Assignments />} />
-          <Route path="People" element={<PeopleTable users={enrolledUsers} />} />
+          <Route path="Assignments/New" element={<AssignmentEditor />} />
+          <Route path="Assignments/View/:aid" element={<AssignmentView />} />
+          <Route path="Assignments/:aid" element={<AssignmentEditor />} />
+          <Route
+            path="People"
+            element={
+              <PeopleTable
+                users={enrolledUsers}
+                selectedUser={null}
+                refreshUsers={fetchEnrolledUsers}
+                linkToUserDetails={false}
+                onSelectUser={(user) => setEnrolledUsers((prev) => [...prev])}
+              />
+            }
+          />
         </Routes>
       </div>
     </div>

@@ -31,7 +31,12 @@ export default function ModulesControls({
 
   return (
     <div id="wd-modules-controls" className="text-nowrap">
-      <Button variant="light" size="lg" className="me-2 float-end" id="wd-view-progress">
+      <Button
+        variant="light"
+        size="lg"
+        className="me-2 float-end"
+        id="wd-view-progress"
+      >
         View Progress
       </Button>
 
@@ -41,14 +46,17 @@ export default function ModulesControls({
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item id="wd-publish-all-modules-and-items">
-            <BsCheckCircleFill className="me-2 text-success" /> Publish all modules and items
+            <BsCheckCircleFill className="me-2 text-success" /> Publish all
+            modules and items
           </Dropdown.Item>
           <Dropdown.Item id="wd-publish-modules-only">
-            <BsCheckCircleFill className="me-2 text-success" /> Publish modules only
+            <BsCheckCircleFill className="me-2 text-success" /> Publish modules
+            only
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item id="wd-unpublish-all-modules-and-items">
-            <span className="text-danger">🚫</span> Unpublish all modules and items
+            <span className="text-danger">🚫</span> Unpublish all modules and
+            items
           </Dropdown.Item>
           <Dropdown.Item id="wd-unpublish-modules-only">
             <span className="text-danger">🚫</span> Unpublish modules only

@@ -15,15 +15,16 @@ export default function Lab4() {
   return (
     <div id="wd-passing-functions">
       <h2>Lab 4</h2>
-      <ClickEvent/>
-      <PassingDataOnEvent/>
+      <ClickEvent />
+      <PassingDataOnEvent />
       <PassingFunctions theFunction={sayHello} />
-      <Counter/>
-      <BooleanStateVariables/>
-      <StringStateVariables/>
-      <DateStateVariable/>
-      <ArrayStateVariable/>
-      <ParentStateComponent/>
-      <ReduxExamples/>
+      <Counter />
+      <BooleanStateVariables />
+      <StringStateVariables />
+      <DateStateVariable />
+      <ArrayStateVariable />
+      <ParentStateComponent />
+      <ReduxExamples />
     </div>
-);}
+  );
+}

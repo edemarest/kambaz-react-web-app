@@ -33,15 +33,27 @@ export default function CourseStatus() {
 
       {isFaculty && (
         <>
-          <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-100 mt-1 text-start"
+          >
             <BiImport className="me-2 fs-5" /> Import Existing Content
           </Button>
 
-          <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-100 mt-1 text-start"
+          >
             <LiaFileImportSolid className="me-2 fs-5" /> Import from Commons
           </Button>
 
-          <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-100 mt-1 text-start"
+          >
             <BsHouseDoor className="me-2 fs-5" /> Choose Home Page
           </Button>
         </>
@@ -53,15 +65,27 @@ export default function CourseStatus() {
 
       {isFaculty && (
         <>
-          <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-100 mt-1 text-start"
+          >
             <FaBullhorn className="me-2 fs-5" /> New Announcement
           </Button>
 
-          <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-100 mt-1 text-start"
+          >
             <FaChartBar className="me-2 fs-5" /> New Analytics
           </Button>
 
-          <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-100 mt-1 text-start"
+          >
             <BsBell className="me-2 fs-5" /> View Course Notifications
           </Button>
         </>

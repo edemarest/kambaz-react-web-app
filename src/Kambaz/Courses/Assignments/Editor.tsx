@@ -25,7 +25,7 @@ export default function AssignmentEditor() {
     const data = await client.fetchAssignmentsForCourse(cid!);
     setAssignments(data);
 
-    const found = data.find((a: { _id: string | undefined; }) => a._id === aid);
+    const found = data.find((a: { _id: string | undefined }) => a._id === aid);
     if (found) {
       setAssignment(found);
     } else {
@@ -164,9 +164,7 @@ export default function AssignmentEditor() {
       <div className="wd-editor-actions">
         <Button
           variant="light"
-          onClick={() =>
-            navigate(`/Kambaz/Courses/${cid}/Assignments`)
-          }
+          onClick={() => navigate(`/Kambaz/Courses/${cid}/Assignments`)}
         >
           Cancel
         </Button>

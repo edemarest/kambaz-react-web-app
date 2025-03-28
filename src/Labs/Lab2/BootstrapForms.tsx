@@ -1,7 +1,21 @@
-import { FormGroup, FormLabel, FormControl, Button, Col, Form, FormSelect, InputGroup, Row } from "react-bootstrap";
+import {
+  FormGroup,
+  FormLabel,
+  FormControl,
+  Button,
+  Col,
+  Form,
+  FormSelect,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import FormRange from "react-bootstrap/esm/FormRange";
+import { useState } from "react";
 
 export default function BootstrapForms() {
+  const [selectValue, setSelectValue] = useState("");
+  const [radioValue, setRadioValue] = useState("first");
+
   return (
     <div>
       <div id="wd-css-styling-forms">
@@ -15,28 +29,50 @@ export default function BootstrapForms() {
           <FormControl as="textarea" rows={3} />
         </FormGroup>
       </div>
+
       <div id="wd-css-styling-dropdowns">
         <h3>Dropdowns</h3>
-        <FormSelect>
-          <option selected>Open this select menu</option>
+        <FormSelect
+          value={selectValue}
+          onChange={(e) => setSelectValue(e.target.value)}
+        >
+          <option value="">Open this select menu</option>
           <option value="1">One</option>
           <option value="2">Two</option>
           <option value="3">Three</option>
         </FormSelect>
       </div>
+
       <div id="wd-css-styling-switches">
         <h3>Switches</h3>
-        <Form.Check type="switch" checked={false} id="wd-switch-1"
-          label="Unchecked switch checkbox input" />
-        <Form.Check type="switch" checked={true} id="wd-switch-2"
-          label="Checked switch checkbox input" />
-        <Form.Check type="switch" checked={false} disabled
-          id="custom-switch"
-          label="Unchecked disabled switch checkbox input" />
-        <Form.Check type="switch" checked={true} disabled
-          id="custom-switch"
-          label="Checked disabled switch checkbox input" />
+        <Form.Check
+          type="switch"
+          defaultChecked={false}
+          id="wd-switch-1"
+          label="Unchecked switch checkbox input"
+        />
+        <Form.Check
+          type="switch"
+          defaultChecked={true}
+          id="wd-switch-2"
+          label="Checked switch checkbox input"
+        />
+        <Form.Check
+          type="switch"
+          defaultChecked={false}
+          disabled
+          id="custom-switch-1"
+          label="Unchecked disabled switch checkbox input"
+        />
+        <Form.Check
+          type="switch"
+          defaultChecked={true}
+          disabled
+          id="custom-switch-2"
+          label="Checked disabled switch checkbox input"
+        />
       </div>
+
       <div id="wd-css-styling-range-and-sliders">
         <h3>Range</h3>
         <FormGroup controlId="wd-range1">
@@ -44,6 +80,7 @@ export default function BootstrapForms() {
           <FormRange min="0" max="5" step="0.5" />
         </FormGroup>
       </div>
+
       <div id="wd-css-styling-addons">
         <h3>Addons</h3>
         <InputGroup className="mb-3">
@@ -57,6 +94,7 @@ export default function BootstrapForms() {
           <InputGroup.Text>0.00</InputGroup.Text>
         </InputGroup>
       </div>
+
       <div id="wd-css-responsive-forms-1">
         <h3>Responsive forms</h3>
         <Form.Group as={Row} className="mb-3" controlId="email1">
@@ -64,7 +102,7 @@ export default function BootstrapForms() {
             Email
           </Form.Label>
           <Col sm={10}>
-            <Form.Control type="email" value="email@example.com" />
+            <Form.Control type="email" defaultValue="email@example.com" />
           </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="password1">
@@ -84,17 +122,22 @@ export default function BootstrapForms() {
           </Col>
         </Form.Group>
       </div>
+
       <div id="wd-css-responsive-forms-2">
         <h3>Responsive forms</h3>
         <Form>
           <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}> Email </Form.Label>
+            <Form.Label column sm={2}>
+              Email
+            </Form.Label>
             <Col sm={10}>
               <Form.Control type="email" placeholder="Email" />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}> Password </Form.Label>
+            <Form.Label column sm={2}>
+              Password
+            </Form.Label>
             <Col sm={10}>
               <Form.Control type="password" placeholder="Password" />
             </Col>
@@ -102,20 +145,39 @@ export default function BootstrapForms() {
           <fieldset>
             <Form.Group as={Row} className="mb-3">
               <Form.Label as="legend" column sm={2}>
-                Radios </Form.Label>
+                Radios
+              </Form.Label>
               <Col sm={10}>
-                <Form.Check type="radio" label="first radio"
-                  checked name="formHorizontalRadios" />
-                <Form.Check type="radio" label="second radio"
-                  name="formHorizontalRadios" />
-                <Form.Check type="radio" label="third radio"
-                  name="formHorizontalRadios" />
+                <Form.Check
+                  type="radio"
+                  label="first radio"
+                  name="formHorizontalRadios"
+                  value="first"
+                  checked={radioValue === "first"}
+                  onChange={(e) => setRadioValue(e.target.value)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="second radio"
+                  name="formHorizontalRadios"
+                  value="second"
+                  checked={radioValue === "second"}
+                  onChange={(e) => setRadioValue(e.target.value)}
+                />
+                <Form.Check
+                  type="radio"
+                  label="third radio"
+                  name="formHorizontalRadios"
+                  value="third"
+                  checked={radioValue === "third"}
+                  onChange={(e) => setRadioValue(e.target.value)}
+                />
               </Col>
             </Form.Group>
           </fieldset>
           <Form.Group as={Row} className="mb-3">
             <Col sm={{ span: 10, offset: 2 }}>
-              <Form.Check label="Remember me" />
+              <Form.Check label="Remember me" defaultChecked />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
@@ -128,4 +190,3 @@ export default function BootstrapForms() {
     </div>
   );
 }
-

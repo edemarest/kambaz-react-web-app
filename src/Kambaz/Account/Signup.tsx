@@ -65,13 +65,17 @@ export default function Signup() {
           type="password"
           className="wd-input mb-3"
           value={newUser.verifyPassword}
-          onChange={(e) => setNewUser({ ...newUser, verifyPassword: e.target.value })}
+          onChange={(e) =>
+            setNewUser({ ...newUser, verifyPassword: e.target.value })
+          }
         />
         <Form.Control
           placeholder="First Name"
           className="wd-input mb-2"
           value={newUser.firstName}
-          onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
+          onChange={(e) =>
+            setNewUser({ ...newUser, firstName: e.target.value })
+          }
         />
         <Form.Control
           placeholder="Last Name"
@@ -105,7 +109,10 @@ export default function Signup() {
           </Button>
         </div>
         <div className="wd-button-container">
-          <Button variant="link" onClick={() => navigate("/Kambaz/Account/Signin")}>
+          <Button
+            variant="link"
+            onClick={() => navigate("/Kambaz/Account/Signin")}
+          >
             Already have an account? Sign In
           </Button>
         </div>

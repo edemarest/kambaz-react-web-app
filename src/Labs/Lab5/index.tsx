@@ -16,7 +16,8 @@ export default function Lab5() {
         <a href={`${REMOTE_SERVER}/lab5/welcome`} className="list-group-item">
           Welcome
         </a>
-      </div><hr />
+      </div>
+      <hr />
       <EnvironmentVariables />
       <PathParameters />
       <QueryParameters />

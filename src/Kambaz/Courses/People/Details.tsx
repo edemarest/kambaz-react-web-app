@@ -65,8 +65,7 @@ export default function PeopleDetails({
   };
 
   if (!userData || !userData._id) return null;
-  const isCurrentUser = currentUser && currentUser._id === userData._id;
-  const canEdit = isCurrentUser || currentUser.role === "ADMIN";
+  const canEdit = currentUser?.role === "ADMIN";
 
   return (
     <div className="wd-people-details">
@@ -117,9 +116,7 @@ export default function PeopleDetails({
           <select
             className="form-select w-50"
             value={userData.role}
-            onChange={(e) =>
-              setUserData({ ...userData, role: e.target.value })
-            }
+            onChange={(e) => setUserData({ ...userData, role: e.target.value })}
           >
             <option value="STUDENT">Student</option>
             <option value="TA">Assistant</option>
