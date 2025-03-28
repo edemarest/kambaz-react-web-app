@@ -93,7 +93,7 @@ export default function Courses({
                 selectedUser={null}
                 refreshUsers={fetchEnrolledUsers}
                 linkToUserDetails={false}
-                onSelectUser={(user) => setEnrolledUsers((prev) => [...prev])}
+                onSelectUser={() => setEnrolledUsers((prev) => [...prev])}
               />
             }
           />
