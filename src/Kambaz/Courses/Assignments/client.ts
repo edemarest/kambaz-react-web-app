@@ -1,18 +1,18 @@
 import axios from "axios";
+const axiosWithCredentials = axios.create({ withCredentials: true });
 
 const API_BASE = import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
 const ASSIGNMENTS_API = `${API_BASE}/api`;
-axios.defaults.withCredentials = true;
 
 export const fetchAssignmentsForCourse = async (courseId: string) => {
-  const response = await axios.get(
+  const response = await axiosWithCredentials.get(
     `${ASSIGNMENTS_API}/courses/${courseId}/assignments`,
   );
   return response.data;
 };
 
 export const createAssignment = async (courseId: string, assignment: any) => {
-  const response = await axios.post(
+  const response = await axiosWithCredentials.post(
     `${ASSIGNMENTS_API}/courses/${courseId}/assignments`,
     assignment,
   );
@@ -20,7 +20,7 @@ export const createAssignment = async (courseId: string, assignment: any) => {
 };
 
 export const updateAssignment = async (assignmentId: string, updates: any) => {
-  const response = await axios.put(
+  const response = await axiosWithCredentials.put(
     `${ASSIGNMENTS_API}/assignments/${assignmentId}`,
     updates,
   );
@@ -28,7 +28,7 @@ export const updateAssignment = async (assignmentId: string, updates: any) => {
 };
 
 export const deleteAssignment = async (assignmentId: string) => {
-  const response = await axios.delete(
+  const response = await axiosWithCredentials.delete(
     `${ASSIGNMENTS_API}/assignments/${assignmentId}`,
   );
   return response.data;
