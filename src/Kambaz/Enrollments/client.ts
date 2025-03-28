@@ -7,9 +7,7 @@ export const ENROLLMENTS_API = `${REMOTE_SERVER}/api/enrollments`; // Enrollment
 
 export const getUserEnrollments = async () => {
   try {
-    const response = await axiosWithCredentials.get(`${ENROLLMENTS_API}`, {
-      withCredentials: true,
-    });
+    const response = await axiosWithCredentials.get(ENROLLMENTS_API);
     return response.data ?? [];
   } catch (error) {
     console.error("Error fetching user enrollments:", error);
@@ -18,10 +16,9 @@ export const getUserEnrollments = async () => {
 };
 
 export const enrollInCourse = async (courseId: string) => {
-  const response = await axios.post(
+  const response = await axiosWithCredentials.post(
     `${USERS_API}/current/courses/${courseId}`,
-    {},
-    { withCredentials: true },
+    {}
   );
   return response.data;
 };
