@@ -1,22 +1,27 @@
 import axios from "axios";
+const axiosWithCredentials = axios.create({ withCredentials: true });
 
-const API_BASE = import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
-const ENROLLMENTS_API = `${API_BASE}/api`;
+export const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
+export const ENROLLMENTS_API = `${REMOTE_SERVER}/api/enrollments`; // Enrollments API
 
-const AXIOS_CONFIG = { withCredentials: true };
-axios.defaults.withCredentials = true;
-
+// Get all enrollments for the current user
 export const getUserEnrollments = async () => {
-  const response = await axios.get(`${ENROLLMENTS_API}/enrollments`, AXIOS_CONFIG);
-  return response.data;
+  try {
+    const response = await axios.get(`${ENROLLMENTS_API}`, { withCredentials: true });
+    return response.data ?? [];
+  } catch (error) {
+    console.error("Error fetching user enrollments:", error);
+    throw new Error("Failed to fetch enrollments.");
+  }
 };
 
+// Enroll the current user in a specific course
 export const enrollInCourse = async (courseId: string) => {
-  const response = await axios.post(`${ENROLLMENTS_API}/courses/${courseId}/enroll`, {}, AXIOS_CONFIG);
-  return response.data;
-};
-
-export const unenrollFromCourse = async (courseId: string) => {
-  const response = await axios.delete(`${ENROLLMENTS_API}/courses/${courseId}/unenroll`, AXIOS_CONFIG);
-  return response.data;
+  try {
+    const response = await axios.post(`${ENROLLMENTS_API}/courses/${courseId}`, {}, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.error("Error enrolling in course:", error);
+    throw new Error("Failed to enroll in course.");
+  }
 };

@@ -1,13 +1,34 @@
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Button, Dropdown } from "react-bootstrap";
 import ModuleEditor from "./ModuleEditor";
 import "./styles.css";
 
-export default function ModulesControls(
-  { moduleName, setModuleName, addModule }:
-  { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }
-) {  
+export default function ModulesControls({
+  moduleName,
+  setModuleName,
+  addModule,
+}: {
+  moduleName: string;
+  setModuleName: (title: string) => void;
+  addModule: (name: string) => void;
+}) {
+  const [showEditor, setShowEditor] = useState(false);
+
+  const handleOpenModal = () => {
+    setShowEditor(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowEditor(false);
+  };
+
+  const handleAddModule = (name: string) => {
+    addModule(name);
+    setShowEditor(false);
+  };
+
   return (
     <div id="wd-modules-controls" className="text-nowrap">
       <Button variant="light" size="lg" className="me-2 float-end" id="wd-view-progress">
@@ -35,17 +56,34 @@ export default function ModulesControls(
         </Dropdown.Menu>
       </Dropdown>
 
-      <Button variant="light" size="lg" className="me-2 float-end" id="wd-collapse-all">
+      <Button
+        variant="light"
+        size="lg"
+        className="me-2 float-end"
+        id="wd-collapse-all"
+      >
         Collapse All
       </Button>
 
-      <Button variant="danger" size="lg" className="float-end" id="wd-add-module-btn"
-              data-bs-toggle="modal" data-bs-target="#wd-add-module-dialog" >
+      <Button
+        variant="danger"
+        size="lg"
+        className="float-end"
+        id="wd-add-module-btn"
+        onClick={handleOpenModal}
+      >
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Module
       </Button>
-      <ModuleEditor dialogTitle="Add Module" moduleName={moduleName}
-                    setModuleName={setModuleName} addModule={addModule} />
+
+      <ModuleEditor
+        dialogTitle="Add Module"
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={handleAddModule}
+        show={showEditor}
+        onHide={handleCloseModal}
+      />
     </div>
   );
 }

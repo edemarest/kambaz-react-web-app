@@ -1,70 +1,70 @@
-import { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { ListGroup, Alert } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import LessonControlButtons from "./LessonControlButtons";
 import * as client from "./client";
+import {
+  setModules,
+  addModule,
+  updateModule,
+  deleteModule as deleteModuleAction,
+} from "./reducer";
 
 export default function Modules() {
   const { cid } = useParams();
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const [modules, setModules] = useState<any[]>([]);
+  const modules = useSelector((state: any) => state.modules.modules);
   const [moduleName, setModuleName] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
   const isFaculty = currentUser?.role === "FACULTY";
 
-  const loadModules = useCallback(async () => {
-    try {
-      const data = await client.fetchModulesForCourse(cid!);
-      setModules(data);
-      setError(null);
-    } catch (error) {
-      setError("Error fetching modules. Please try again.");
-    }
-  }, [cid]);
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const data = await client.fetchModulesForCourse(cid!);
+        dispatch(setModules(data));
+      } catch (error) {
+        console.error("Error loading modules:", error);
+      }
+    };
 
-  const handleCreate = async () => {
+    fetchModules();
+  }, [cid, dispatch]);
+
+  const handleCreate = async (name: string) => {
     try {
-      const newModule = await client.createModule(cid!, { name: moduleName });
-      setModules([...modules, newModule]);
-      setModuleName("");
-      setError(null);
+      const newModule = await client.createModule(cid!, { name });
+      dispatch(addModule(newModule));
+      setModuleName(""); 
     } catch (error) {
-      setError("Error creating module. Please try again.");
+      console.error("Error creating module:", error);
     }
-  };
+  };  
 
   const handleDelete = async (moduleId: string) => {
     try {
       await client.deleteModule(moduleId);
-      setModules(modules.filter((m) => m._id !== moduleId));
-      setError(null);
+      dispatch(deleteModuleAction(moduleId));
     } catch (error) {
-      setError("Error deleting module. Please try again.");
+      console.error("Error deleting module:", error);
     }
   };
 
   const handleUpdate = async (updatedModule: any) => {
     try {
       await client.updateModule(updatedModule._id, updatedModule);
-      setModules(modules.map((m) => m._id === updatedModule._id ? updatedModule : m));
-      setError(null);
+      dispatch(updateModule({ ...updatedModule, editing: false }));
     } catch (error) {
-      setError("Error updating module. Please try again.");
+      console.error("Error updating module:", error);
     }
   };
 
-  useEffect(() => {
-    loadModules();
-  }, [loadModules]);
-
   return (
     <div>
-      {error && <Alert variant="danger">{error}</Alert>}
       {isFaculty && (
         <ModulesControls
           moduleName={moduleName}
@@ -75,7 +75,7 @@ export default function Modules() {
       <br /><br /><br /><br />
       <ListGroup className="rounded-0" id="wd-modules">
         {modules.length > 0 ? (
-          modules.map((module) => (
+          modules.map((module: any) => (
             <ListGroup.Item key={module._id} className="wd-module p-0 mb-5 fs-5 border-gray">
               <div className="wd-title p-3 ps-2 bg-secondary">
                 {!module.editing ? (
@@ -85,13 +85,13 @@ export default function Modules() {
                     className="form-control w-50 d-inline-block"
                     value={module.name}
                     onChange={(e) =>
-                      setModules(modules.map((m) =>
-                        m._id === module._id ? { ...m, name: e.target.value } : m
-                      ))
+                      dispatch(
+                        updateModule({ ...module, name: e.target.value })
+                      )
                     }
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        handleUpdate({ ...module, editing: false });
+                        handleUpdate(module);
                       }
                     }}
                   />
@@ -100,10 +100,10 @@ export default function Modules() {
                   <ModuleControlButtons
                     moduleId={module._id}
                     deleteModule={handleDelete}
-                    editModule={(id: string) =>
-                      setModules(modules.map((m) =>
-                        m._id === id ? { ...m, editing: true } : m
-                      ))
+                    editModule={() =>
+                      dispatch(
+                        updateModule({ ...module, editing: true })
+                      )
                     }
                   />
                 )}

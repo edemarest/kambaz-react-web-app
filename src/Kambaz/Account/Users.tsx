@@ -58,7 +58,6 @@ export default function Users() {
     const restoreSession = async () => {
       try {
         const profile = await client.profile();
-        console.log("Restored session for:", profile);
       } catch (e) {
         console.warn("Session not active or user not signed in.");
       }

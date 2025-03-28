@@ -1,46 +1,72 @@
-import { Route, Routes, useParams, Navigate } from "react-router";
-import { useSelector } from "react-redux";
-import { FaAlignJustify } from "react-icons/fa6";
-import CourseNavigation from "./Navigation";
-import Modules from "./Modules";
-import Home from "./Home";
-import Assignments from "./Assignments";
-import AssignmentEditor from "./Assignments/Editor";
-import AssignmentViewer from "./Assignments/AssignmentView";
+import { useEffect, useState } from "react";
+import { useParams, Navigate, Route, Routes } from "react-router-dom";
+import * as client from "./client";
 import PeopleTable from "./People/Table";
+import Assignments from "./Assignments";
+import Home from "./Home";
+import Modules from "./Modules";
+import CourseNavigation from "./Navigation";
+
+interface Enrollment {
+  user: any;
+  course: any;
+  status: string;
+}
 
 interface Course {
   _id: string;
   name: string;
   description: string;
   createdBy: string;
-}
-
-interface Enrollment {
-  user: string;
-  course: string;
+  number: string;
 }
 
 export default function Courses({
   courses,
   enrollments,
+  currentUser,
 }: {
   courses: Course[];
   enrollments: Enrollment[];
+  currentUser: any;
 }) {
   const { cid } = useParams();
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const [enrolledUsers, setEnrolledUsers] = useState<any[]>([]);
+
   const course = courses.find((c) => c._id === cid);
 
+  if (!courses.length) return <p>Loading courses...</p>;
   if (!course) return <p className="text-muted">Course not found.</p>;
 
-  const isFaculty = currentUser?.role === "FACULTY";
+  const fetchEnrolledUsers = async () => {
+    try {
+      const users = await client.findUsersForCourse(course._id);
+      const filtered = users.filter((u: any) => u && u._id);
+      setEnrolledUsers(filtered);
+    } catch (error) {
+      console.error("Error fetching enrolled users:", error);
+    }
+  };
 
-  const isEnrolled = isFaculty || enrollments.some(
-    (e) => e.user === currentUser?._id && e.course === cid
-  );  
+  useEffect(() => {
+    if (course?._id) {
+      fetchEnrolledUsers();
+    }
+  }, [course]);
 
-  if (!isEnrolled) return <Navigate to="/Kambaz/Dashboard" />;
+  const isEnrolled = enrollments.some((en) => {
+    const courseId = en.course?._id || en.course;
+    const userId = en.user?._id || en.user;
+    return (
+      courseId === course._id &&
+      userId === currentUser?._id &&
+      en.status === "ENROLLED"
+    );
+  });
+
+  if (!isEnrolled) {
+    return <Navigate to="/Kambaz/Dashboard" />;
+  }
 
   return (
     <div id="wd-courses" className="d-flex">
@@ -48,18 +74,13 @@ export default function Courses({
         <CourseNavigation />
       </div>
       <div className="flex-fill p-3">
-        <h2 className="text-danger">
-          <FaAlignJustify className="me-4 fs-4 mb-1" />
-          {course.name}
-        </h2>
+        <h2 className="text-danger">{course.name}</h2>
         <hr />
         <Routes>
           <Route path="Home" element={<Home />} />
           <Route path="Modules" element={<Modules />} />
           <Route path="Assignments" element={<Assignments />} />
-          {isFaculty && <Route path="Assignments/:aid" element={<AssignmentEditor />} />}
-          {!isFaculty && <Route path="Assignments/View/:aid" element={<AssignmentViewer />} />}
-          <Route path="People" element={<PeopleTable />} />
+          <Route path="People" element={<PeopleTable users={enrolledUsers} />} />
         </Routes>
       </div>
     </div>

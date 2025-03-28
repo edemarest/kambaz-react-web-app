@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Card, Row, Col, Alert } from "react-bootstrap";
+import { Card, Row, Col, Alert, Spinner } from "react-bootstrap";
 import * as client from "./client";
 import "./styles.css";
 
@@ -19,15 +19,19 @@ export default function AssignmentView() {
   const { cid, aid } = useParams();
   const [assignment, setAssignment] = useState<Assignment | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const loadAssignment = async () => {
     try {
+      setLoading(true);
       setError(null);
-      const all = await client.fetchAssignmentsForCourse(cid!);
-      const found = all.find((a: Assignment) => a._id === aid);
+      const allAssignments = await client.fetchAssignmentsForCourse(cid!);
+      const found = allAssignments.find((a: Assignment) => a._id === aid);
       setAssignment(found || null);
     } catch (err) {
       setError("Failed to load assignment. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,11 +39,17 @@ export default function AssignmentView() {
     loadAssignment();
   }, [cid, aid]);
 
+  if (loading) {
+    return <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>;
+  }
+
   if (error) {
     return <Alert variant="danger">{error}</Alert>;
   }
 
-  if (!assignment) return <p className="text-muted">Assignment not found.</p>;
+  if (!assignment) {
+    return <p className="text-muted">Assignment not found.</p>;
+  }
 
   return (
     <Card className="p-4 shadow-sm">

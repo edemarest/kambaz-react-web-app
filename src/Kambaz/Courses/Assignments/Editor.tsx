@@ -17,28 +17,27 @@ interface Assignment {
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
   const navigate = useNavigate();
-  const [assignment, setAssignment] = useState<any>(null);
-  const [assignments, setAssignments] = useState<any[]>([]);
+
+  const [assignment, setAssignment] = useState<Assignment | null>(null);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
 
   const loadAssignments = async () => {
     const data = await client.fetchAssignmentsForCourse(cid!);
     setAssignments(data);
 
-    const found: Assignment | undefined = data.find((a: Assignment) => a._id === aid);
+    const found = data.find((a: { _id: string | undefined; }) => a._id === aid);
     if (found) {
       setAssignment(found);
     } else {
       setAssignment({
-        _id: `A${Math.floor(Math.random() * 1000)}`,
+        _id: "",
         title: "",
-        description: `The assignment is available online. Submit a link to the landing page of your Web application running on Netlify.\n
-The landing page should include the following:\n• Your full name and section\n• Links to each of the lab assignments\n• Link to the Kanbas application\n• Links to all relevant source code repositories\n
-The Kanbas application should include a link to navigate back to the landing page.`,
+        description: "Please describe the assignment...",
         points: 100,
         dueDate: "2024-05-13",
         availableFrom: "2024-05-06",
         availableUntil: "2024-05-20",
-        course: cid,
+        course: cid!,
       });
     }
   };
@@ -46,16 +45,19 @@ The Kanbas application should include a link to navigate back to the landing pag
   const handleSave = async () => {
     if (!assignment) return;
 
-    if (assignments.find((a) => a._id === aid)) {
+    if (assignment._id && assignments.find((a) => a._id === assignment._id)) {
       await client.updateAssignment(assignment._id, assignment);
     } else {
       await client.createAssignment(cid!, assignment);
     }
+
     navigate(`/Kambaz/Courses/${cid}/Assignments`);
   };
 
   useEffect(() => {
-    loadAssignments();
+    if (cid) {
+      loadAssignments();
+    }
   }, [cid, aid]);
 
   if (!assignment) return null;
@@ -67,7 +69,9 @@ The Kanbas application should include a link to navigate back to the landing pag
         <Form.Control
           type="text"
           value={assignment.title}
-          onChange={(e) => setAssignment({ ...assignment, title: e.target.value })}
+          onChange={(e) =>
+            setAssignment({ ...assignment, title: e.target.value })
+          }
         />
       </Form.Group>
 
@@ -77,59 +81,29 @@ The Kanbas application should include a link to navigate back to the landing pag
           as="textarea"
           rows={5}
           value={assignment.description}
-          onChange={(e) => setAssignment({ ...assignment, description: e.target.value })}
+          onChange={(e) =>
+            setAssignment({ ...assignment, description: e.target.value })
+          }
         />
       </Form.Group>
 
       <Table borderless>
         <tbody>
-          {[
-            { label: "Points", type: "number", value: assignment.points, key: "points" },
-            { label: "Assignment Group", type: "select", options: ["ASSIGNMENTS"], value: "ASSIGNMENTS", key: "group" },
-            { label: "Display Grade as", type: "select", options: ["Percentage"], value: "Percentage", key: "grading" }
-          ].map(({ label, type, value, key, options }, index) => (
-            <tr key={index}>
-              <td className="wd-label">
-                <Form.Label>{label}</Form.Label>
-              </td>
-              <td>
-                {options ? (
-                  <Form.Select defaultValue={value}>
-                    {options.map((option, i) => <option key={i}>{option}</option>)}
-                  </Form.Select>
-                ) : (
-                  <Form.Control
-                    type={type}
-                    value={value}
-                    onChange={(e) => setAssignment({ ...assignment, [key]: e.target.value })}
-                  />
-                )}
-              </td>
-            </tr>
-          ))}
-
           <tr>
             <td className="wd-label">
-              <Form.Label>Submission Type</Form.Label>
+              <Form.Label>Points</Form.Label>
             </td>
             <td>
-              <Card className="wd-rounded-container">
-                <Form.Select defaultValue="Online" className="mb-2">
-                  <option>Online</option>
-                </Form.Select>
-                <Form.Label className="wd-subtitle">Online Entry Options</Form.Label>
-                <div className="wd-checkbox-group">
-                  {["Text Entry", "Website URL", "Media Recordings", "Student Annotation", "File Uploads"].map((label, i) => (
-                    <Form.Check
-                      type="checkbox"
-                      key={i}
-                      label={label}
-                      defaultChecked={label === "Website URL"}
-                      className="form-check"
-                    />
-                  ))}
-                </div>
-              </Card>
+              <Form.Control
+                type="number"
+                value={assignment.points}
+                onChange={(e) =>
+                  setAssignment({
+                    ...assignment,
+                    points: parseInt(e.target.value),
+                  })
+                }
+              />
             </td>
           </tr>
 
@@ -145,22 +119,39 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Control
                   type="date"
                   value={assignment.dueDate}
-                  onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })}
+                  onChange={(e) =>
+                    setAssignment({ ...assignment, dueDate: e.target.value })
+                  }
                 />
                 <div className="d-flex wd-date-container">
-                  {[
-                    { label: "Available From", key: "availableFrom", value: assignment.availableFrom },
-                    { label: "Until", key: "availableUntil", value: assignment.availableUntil }
-                  ].map(({ label, key, value }, i) => (
-                    <div key={i} className="wd-date-input">
-                      <Form.Label className="wd-subtitle">{label}</Form.Label>
-                      <Form.Control
-                        type="date"
-                        value={value}
-                        onChange={(e) => setAssignment({ ...assignment, [key]: e.target.value })}
-                      />
-                    </div>
-                  ))}
+                  <div className="wd-date-input">
+                    <Form.Label className="wd-subtitle">
+                      Available From
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={assignment.availableFrom}
+                      onChange={(e) =>
+                        setAssignment({
+                          ...assignment,
+                          availableFrom: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="wd-date-input">
+                    <Form.Label className="wd-subtitle">Until</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={assignment.availableUntil}
+                      onChange={(e) =>
+                        setAssignment({
+                          ...assignment,
+                          availableUntil: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
                 </div>
               </Card>
             </td>
@@ -171,7 +162,12 @@ The Kanbas application should include a link to navigate back to the landing pag
       <hr />
 
       <div className="wd-editor-actions">
-        <Button variant="light" onClick={() => navigate(`/Kambaz/Courses/${cid}/Assignments`)}>
+        <Button
+          variant="light"
+          onClick={() =>
+            navigate(`/Kambaz/Courses/${cid}/Assignments`)
+          }
+        >
           Cancel
         </Button>
         <Button variant="danger" onClick={handleSave}>

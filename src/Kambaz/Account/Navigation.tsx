@@ -28,7 +28,7 @@ export default function AccountNavigation() {
             Profile
           </Link>
 
-            {(currentUser.role === "ADMIN" || currentUser.role === "FACULTY") && (
+            {currentUser && (currentUser.role === "ADMIN" || currentUser.role === "FACULTY") && (
             <Link to="/Kambaz/Account/Users" className={`wd-nav-link ${isActive("/Kambaz/Account/Users") ? "wd-active" : ""}`}>
               <div className={`wd-nav-bar ${isActive("/Kambaz/Account/Users") ? "wd-active-bar" : ""}`}></div>
               Users
