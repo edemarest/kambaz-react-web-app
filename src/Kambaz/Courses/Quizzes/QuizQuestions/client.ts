@@ -25,7 +25,7 @@ export const getAllSubmissionsForQuiz = async (quizId: any) => {
 
 export const findQuestionsForQuiz = async (quizId: any) => {
   try {
-    const response = await axios.get(`${QUIZ_API}/${quizId}/questions`);
+    const response = await axiosWithCredentials.get(`${QUIZ_API}/${quizId}/questions`);
     return response.data;
   } catch (err) {
     throw err;
@@ -58,7 +58,7 @@ export const createQuestion = async (quizId: string, question: any) => {
 
 export const deleteQuestion = async (questionId: string) => {
   try {
-    const response = await axios.delete(
+    const response = await axiosWithCredentials.delete(
       `${import.meta.env.VITE_REMOTE_SERVER}/api/questions/${questionId}`,
       { withCredentials: true }
     );
