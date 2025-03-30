@@ -122,6 +122,10 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
       <table className="table table-borderless w-auto mb-4">
         <tbody>
           <tr>
+            <td><strong>Total Points</strong></td>
+            <td>{totalPoints}</td>
+          </tr>
+          <tr>
             <td><strong>Quiz Type</strong></td>
             <td>{quiz.quizType}</td>
           </tr>

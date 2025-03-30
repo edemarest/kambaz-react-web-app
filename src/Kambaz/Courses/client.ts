@@ -76,7 +76,7 @@ export const findUsersForCourse = async (courseId: string) => {
 };
 
 export const enrollInCourse = async (courseId: string) => {
-  const response = await axiosWithCredentials.post(
+  const response = await axios.post(
     `${USERS_API}/current/courses/${courseId}`,
     {},
     { withCredentials: true },

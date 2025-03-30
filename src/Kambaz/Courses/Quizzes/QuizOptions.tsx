@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import * as client from "./client";
+import * as client from "./SubmissionView/submissionClient";
 
 export default function QuizOptions({ quiz, refresh }: { quiz: any; refresh: () => void }) {
   const { cid } = useParams();
