@@ -59,8 +59,8 @@ export default function Dashboard({
     ? courses
     : isFaculty
       ? courses.filter(
-          (course) => course.enrolled || course.createdBy === currentUser._id,
-        )
+        (course) => course.enrolled || course.createdBy === currentUser._id,
+      )
       : courses.filter((course) => course.enrolled);
 
   const handleAddCourse = async () => {
@@ -121,10 +121,10 @@ export default function Dashboard({
               isFaculty
                 ? { backgroundColor: "#d3d3d3" }
                 : {
-                    backgroundColor: enrolling ? "green" : "red",
-                    borderColor: enrolling ? "green" : "red",
-                    cursor: "pointer",
-                  }
+                  backgroundColor: enrolling ? "green" : "red",
+                  borderColor: enrolling ? "green" : "red",
+                  cursor: "pointer",
+                }
             }
           />
           <label
@@ -363,6 +363,42 @@ export default function Dashboard({
             </Col>
           ))}
         </Row>
+        <div
+          style={{
+            position: "fixed",
+            bottom: "12px",
+            right: "12px",
+            fontSize: "0.75rem",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            padding: "0.5rem 0.75rem",
+            borderRadius: "8px",
+            boxShadow: "0 0 8px rgba(0,0,0,0.1)",
+            zIndex: 1000,
+            maxWidth: "220px",
+            lineHeight: "1.3",
+          }}
+        >
+          <div>Assignment 6 by Ella Demarest</div>
+          <div>Web Dev Section CS4550.37031.202530</div>
+          <div>
+            <a
+              href="https://github.com/edemarest/kambaz-react-web-app/tree/a6"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Frontend Repository
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://github.com/edemarest/kambaz-node-server-app/tree/a6"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Backend Repository
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
