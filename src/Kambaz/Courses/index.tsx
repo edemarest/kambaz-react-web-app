@@ -8,6 +8,7 @@ import Modules from "./Modules";
 import CourseNavigation from "./Navigation";
 import AssignmentEditor from "./Assignments/Editor";
 import AssignmentView from "./Assignments/AssignmentView";
+import Quiz from "./Quizzes";
 
 interface Enrollment {
   user: any;
@@ -37,12 +38,10 @@ export default function Courses({
 
   const course = courses.find((c) => c._id === cid);
 
-  if (!courses.length) return <p>Loading courses...</p>;
-  if (!course) return <p className="text-muted">Course not found.</p>;
 
   const fetchEnrolledUsers = async () => {
     try {
-      const users = await client.findUsersForCourse(course._id);
+      const users = await client.findUsersForCourse(course?._id || "");
       const filtered = users.filter((u: any) => u && u._id);
       setEnrolledUsers(filtered);
     } catch (error) {
@@ -60,7 +59,7 @@ export default function Courses({
     const courseId = en.course?._id || en.course;
     const userId = en.user?._id || en.user;
     return (
-      courseId === course._id &&
+      courseId === course?._id &&
       userId === currentUser?._id &&
       en.status === "ENROLLED"
     );
@@ -69,6 +68,8 @@ export default function Courses({
   if (!isEnrolled) {
     return <Navigate to="/Kambaz/Dashboard" />;
   }
+  if (!courses.length) return <p>Loading courses...</p>;
+  if (!course) return <p className="text-muted">Course not found.</p>;
 
   return (
     <div id="wd-courses" className="d-flex">
@@ -85,6 +86,8 @@ export default function Courses({
           <Route path="Assignments/New" element={<AssignmentEditor />} />
           <Route path="Assignments/View/:aid" element={<AssignmentView />} />
           <Route path="Assignments/:aid" element={<AssignmentEditor />} />
+          <Route path="Quizzes/*" element={<Quiz currentUser={currentUser} />} />
+
           <Route
             path="People"
             element={
