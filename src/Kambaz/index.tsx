@@ -31,7 +31,7 @@ export default function Kambaz() {
 
   const [courses, setCourses] = useState<Course[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
-  const [enrolling, setEnrolling] = useState<boolean>(false);
+  const [enrolling, setEnrolling] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchEnrollments = async () => {
