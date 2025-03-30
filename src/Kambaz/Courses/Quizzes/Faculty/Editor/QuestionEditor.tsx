@@ -63,15 +63,29 @@ export default function QuestionEditor({ questions, setQuestions }: {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (editIndex !== null && tempQuestion) {
-      const updatedQuestions = [...questions];
-      updatedQuestions[editIndex] = tempQuestion;
-      setQuestions(updatedQuestions);
-      setEditIndex(null);
-      setTempQuestion(null);
+      try {
+        let savedQuestion;
+  
+        if (tempQuestion._id) {
+          savedQuestion = await questionClient.updateQuestion(tempQuestion._id, tempQuestion);
+        } else {
+          if (!qid) return setError("Missing quiz ID for question creation.");
+          savedQuestion = await questionClient.createQuestion(qid, tempQuestion);
+        }
+  
+        const updatedQuestions = [...questions];
+        updatedQuestions[editIndex] = savedQuestion;
+        setQuestions(updatedQuestions);
+  
+        setEditIndex(null);
+        setTempQuestion(null);
+      } catch (err) {
+        setError("Error saving question.");
+      }
     }
-  };
+  };  
 
   const isSaveDisabled = !tempQuestion || !tempQuestion.title || !tempQuestion.questionText || !tempQuestion.type || tempQuestion.points <= 0;
 
