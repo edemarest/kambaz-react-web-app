@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiRedo, BiError } from "react-icons/bi";
-import * as quizClient from "./SubmissionView/submissionClient";
+import * as quizClient from "./SubmissionView/client";
 import * as questionClient from "./QuizQuestions/client";
 import FillInTheBlankQuestion from "./QuizQuestions/FillInTheBlankQuestion";
 import MultipleChoiceQuestion from "./QuizQuestions/MultipleChoiceQuestion";
