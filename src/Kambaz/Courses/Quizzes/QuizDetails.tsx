@@ -126,10 +126,6 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
             <td>{quiz.quizType}</td>
           </tr>
           <tr>
-            <td><strong>Points</strong></td>
-            <td>{quiz.points ?? 0}</td>
-          </tr>
-          <tr>
             <td><strong>Assignment Group</strong></td>
             <td>{quiz.assignmentGroup}</td>
           </tr>
