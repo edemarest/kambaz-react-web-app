@@ -382,7 +382,7 @@ export default function Dashboard({
   <div>Web Dev Section CS4550.37031.202530</div>
   <div>
     <a
-      href="https://github.com/edemarest/kambaz-react-web-app"
+      href="https://github.com/edemarest/kambaz-react-web-app/tree/project"
       target="_blank"
       rel="noreferrer"
     >
@@ -391,7 +391,7 @@ export default function Dashboard({
   </div>
   <div>
     <a
-      href="https://github.com/edemarest/kambaz-node-server-app"
+      href="https://github.com/edemarest/kambaz-node-server-app/tree/project"
       target="_blank"
       rel="noreferrer"
     >
