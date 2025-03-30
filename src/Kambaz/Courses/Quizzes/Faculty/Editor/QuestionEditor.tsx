@@ -42,10 +42,9 @@ export default function QuestionEditor({ questions, setQuestions }: {
     }
   };
 
-  const handleAddQuestion = async () => {
-    if (!qid) return setError("Quiz ID not found.");
+  const handleAddQuestion = () => {
     const newQuestion = {
-      quizId: qid,
+      quizId: qid || "",
       title: "New Question",
       questionText: "",
       type: "MCQ",
@@ -53,37 +52,18 @@ export default function QuestionEditor({ questions, setQuestions }: {
       choices: ["Option A", "Option B", "Option C"],
       correctChoiceIndex: 0,
     };
-    try {
-      const created = await questionClient.createQuestion(qid, newQuestion);
-      setQuestions([...questions, created]);
-      setEditIndex(questions.length);
-      setTempQuestion(created);
-    } catch (err) {
-      setError("Error creating new question.");
-    }
-  };
+    setQuestions([...questions, newQuestion]);
+    setEditIndex(questions.length);
+    setTempQuestion(newQuestion);
+  };  
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (editIndex !== null && tempQuestion) {
-      try {
-        let savedQuestion;
-  
-        if (tempQuestion._id) {
-          savedQuestion = await questionClient.updateQuestion(tempQuestion._id, tempQuestion);
-        } else {
-          if (!qid) return setError("Missing quiz ID for question creation.");
-          savedQuestion = await questionClient.createQuestion(qid, tempQuestion);
-        }
-  
-        const updatedQuestions = [...questions];
-        updatedQuestions[editIndex] = savedQuestion;
-        setQuestions(updatedQuestions);
-  
-        setEditIndex(null);
-        setTempQuestion(null);
-      } catch (err) {
-        setError("Error saving question.");
-      }
+      const updatedQuestions = [...questions];
+      updatedQuestions[editIndex] = tempQuestion;
+      setQuestions(updatedQuestions);
+      setEditIndex(null);
+      setTempQuestion(null);
     }
   };  
 
@@ -174,7 +154,6 @@ export default function QuestionEditor({ questions, setQuestions }: {
                 <button className="btn btn-sm btn-outline-danger" onClick={async () => {
                   if (!q._id) return;
                   if (window.confirm("Are you sure you want to delete this question?")) {
-                    await questionClient.deleteQuestion(q._id);
                     setQuestions(questions.filter((_, i) => i !== index));
                   }
                 }}>
