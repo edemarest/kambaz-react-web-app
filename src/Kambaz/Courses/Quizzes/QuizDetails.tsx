@@ -20,7 +20,7 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
       try {
         const result = await submissionClient.findSubmissionsForUserQuiz(qid);
         if (result) setSubmission(result);
-      } catch (err) {}
+      } catch (err) { }
     }
     const qs = await questionClient.findQuestionsForQuiz(qid);
     setQuestions(qs);
@@ -175,15 +175,14 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
           </tr>
         </tbody>
       </table>
+      <hr />
       <table className="table table-sm w-auto">
         <thead>
-          <hr />
           <tr>
             <th>Due</th>
             <th>Available From</th>
             <th>Until</th>
           </tr>
-          <hr />
         </thead>
         <tbody>
           <tr>
@@ -193,7 +192,7 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
           </tr>
         </tbody>
       </table>
-
+      <hr />
       {submission && (
         <SubmissionView
           quiz={quiz}
