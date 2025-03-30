@@ -12,6 +12,7 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
   const [quiz, setQuiz] = useState<any>(null);
   const [submission, setSubmission] = useState<any>(null);
   const [questions, setQuestions] = useState<any[]>([]);
+  const totalPoints = questions.reduce((sum, q) => sum + (q.points || 0), 0);
 
   const loadQuiz = async () => {
     const q = await client.findQuizById(qid);
