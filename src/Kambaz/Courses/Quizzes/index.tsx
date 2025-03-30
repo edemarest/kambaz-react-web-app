@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Route, Routes } from "react-router-dom";
-import * as client from "./SubmissionView/client";
+import * as client from "./client";
 import * as questionClient from "./QuizQuestions/client";
 
 import QuizDetails from "./QuizDetails";

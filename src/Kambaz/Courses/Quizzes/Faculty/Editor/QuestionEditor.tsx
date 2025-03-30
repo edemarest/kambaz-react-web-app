@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import * as questionClient from "../../QuizQuestions/client";
 import MCQEditor from "./MCQEditor";
 import TrueFalseEditor from "./TrueFalseEditor";
 import '../../index.css';
@@ -59,6 +58,11 @@ export default function QuestionEditor({ questions, setQuestions }: {
 
   const handleSave = () => {
     if (editIndex !== null && tempQuestion) {
+      if (!tempQuestion.title.trim() || !tempQuestion.questionText.trim()) {
+        setError("Title and question text cannot be empty.");
+        return;
+      }
+      setError(null);
       const updatedQuestions = [...questions];
       updatedQuestions[editIndex] = tempQuestion;
       setQuestions(updatedQuestions);
