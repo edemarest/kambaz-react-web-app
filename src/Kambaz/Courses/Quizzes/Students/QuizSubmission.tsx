@@ -29,6 +29,37 @@ export default function SubmissionView(props: {
     return <p className="text-danger">Submission or quiz data missing.</p>;
   }
 
+  const formatAnswer = (q: any, answer: any) => {
+    if (answer === undefined || answer === null) return "(No Answer)";
+    switch (q.type) {
+      case "MCQ":
+        return typeof answer === "string"
+          ? answer
+          : q.choices?.[answer] ?? "(Invalid choice)";
+      case "TRUE_FALSE":
+        return String(answer).toLowerCase() === "true" ? "True" : "False";
+      case "FILL_BLANK":
+        return String(answer).trim();
+      default:
+        return String(answer);
+    }
+  };
+
+  const getCorrectAnswer = (q: any) => {
+    switch (q.type) {
+      case "MCQ":
+        return q.choices?.[q.correctChoiceIndex] ?? "N/A";
+      case "TRUE_FALSE":
+        return q.correctAnswer === true ? "True" : "False";
+      case "FILL_BLANK":
+        return Array.isArray(q.acceptedAnswers)
+          ? q.acceptedAnswers.join(", ")
+          : q.correctAnswer ?? "N/A";
+      default:
+        return "N/A";
+    }
+  };
+
   return (
     <div className="mt-5">
       {!embedded && (
@@ -60,13 +91,15 @@ export default function SubmissionView(props: {
               )}
             </h5>
             <p>{q.questionText}</p>
-            <p><strong>Your Answer:</strong> {studentAns?.answer ?? "(No Answer)"}</p>
+            <p>
+              <strong>Your Answer:</strong>{" "}
+              {formatAnswer(q, studentAns?.answer)}
+            </p>
             {!isCorrect && (
-              <p><strong>Correct Answer:</strong> {
-                q.type === "MCQ"
-                  ? q.choices?.[q.correctChoiceIndex]
-                  : q.correctAnswer?.toString() ?? "N/A"
-              }</p>
+              <p>
+                <strong>Correct Answer:</strong>{" "}
+                {getCorrectAnswer(q)}
+              </p>
             )}
           </div>
         );
