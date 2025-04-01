@@ -75,8 +75,10 @@ export default function QuizList({
                   className="quiz-link flex-grow-1 text-decoration-none text-dark"
                 >
                   <strong className="quiz-list-title">{quiz.title}</strong> —{" "}
-                  {quiz.description}
-                  <br />
+                  <div
+                    className="text-muted mb-1"
+                    dangerouslySetInnerHTML={{ __html: quiz.description }}
+                  />
                   <small>
                     {getAvailabilityLabel(quiz)} | Due:{" "}
                     {quiz.dueDate?.split("T")[0]} | {quiz.points ?? 0} pts |{" "}
