@@ -7,7 +7,9 @@ const COURSE_API = `${import.meta.env.VITE_REMOTE_SERVER}/api/courses`;
 
 export const findQuizzesForCourse = async (courseId: any) => {
   try {
-    const response = await axiosWithCredentials.get(`${COURSE_API}/${courseId}/quizzes`);
+    const response = await axiosWithCredentials.get(
+      `${COURSE_API}/${courseId}/quizzes`,
+    );
     return response.data;
   } catch (err) {
     throw err;
@@ -25,7 +27,10 @@ export const findQuizById = async (quizId: any) => {
 
 export const createQuiz = async (courseId: any, quiz: any) => {
   try {
-    const response = await axiosWithCredentials.post(`${COURSE_API}/${courseId}/quizzes`, quiz);
+    const response = await axiosWithCredentials.post(
+      `${COURSE_API}/${courseId}/quizzes`,
+      quiz,
+    );
     return response.data;
   } catch (err) {
     throw err;
@@ -34,7 +39,10 @@ export const createQuiz = async (courseId: any, quiz: any) => {
 
 export const updateQuiz = async (quizId: any, updates: any) => {
   try {
-    const response = await axiosWithCredentials.put(`${QUIZ_API}/${quizId}`, updates);
+    const response = await axiosWithCredentials.put(
+      `${QUIZ_API}/${quizId}`,
+      updates,
+    );
     return response.data;
   } catch (err) {
     throw err;
@@ -54,9 +62,15 @@ interface TogglePublishPayload {
   publish: boolean;
 }
 
-export const togglePublish = async (quizId: string, publish: boolean): Promise<any> => {
+export const togglePublish = async (
+  quizId: string,
+  publish: boolean,
+): Promise<any> => {
   try {
-    const response = await axiosWithCredentials.patch<{ data: any }>(`${QUIZ_API}/${quizId}/publish`, { publish } as TogglePublishPayload);
+    const response = await axiosWithCredentials.patch<{ data: any }>(
+      `${QUIZ_API}/${quizId}/publish`,
+      { publish } as TogglePublishPayload,
+    );
     return response.data;
   } catch (err) {
     throw err;

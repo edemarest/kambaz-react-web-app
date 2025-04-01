@@ -38,7 +38,6 @@ export default function Courses({
 
   const course = courses.find((c) => c._id === cid);
 
-
   const fetchEnrolledUsers = async () => {
     try {
       const users = await client.findUsersForCourse(course?._id || "");
@@ -86,7 +85,10 @@ export default function Courses({
           <Route path="Assignments/New" element={<AssignmentEditor />} />
           <Route path="Assignments/View/:aid" element={<AssignmentView />} />
           <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-          <Route path="Quizzes/*" element={<Quiz currentUser={currentUser} />} />
+          <Route
+            path="Quizzes/*"
+            element={<Quiz currentUser={currentUser} />}
+          />
 
           <Route
             path="People"

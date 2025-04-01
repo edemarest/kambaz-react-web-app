@@ -1,17 +1,25 @@
 import { useParams } from "react-router-dom";
-import '../../index.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "../../index.css";
 
-export default function QuizEditorDetails({ quiz, setQuiz }: {
+export default function QuizEditorDetails({
+  quiz,
+  setQuiz,
+}: {
   quiz: any;
   setQuiz: React.Dispatch<React.SetStateAction<any>>;
 }) {
   useParams();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value, type } = e.target;
-    const newValue = type === "checkbox"
-      ? (e.target as HTMLInputElement).checked
-      : value;
+    const newValue =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
     setQuiz((prev: any) => ({ ...prev, [name]: newValue }));
   };
 
@@ -19,27 +27,80 @@ export default function QuizEditorDetails({ quiz, setQuiz }: {
 
   return (
     <>
-      <input
-        type="text"
-        name="title"
-        value={quiz.title || ""}
-        onChange={handleChange}
-        className="quiz-title"
-        placeholder="Quiz Title"
-      />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <label
+          style={{ display: "block", marginBottom: "0.2rem", fontWeight: 500 }}
+        >
+          Title:
+        </label>
+        <input
+          type="text"
+          name="title"
+          value={quiz.title || ""}
+          onChange={handleChange}
+          className="quiz-title"
+          placeholder="Quiz Title"
+          style={{
+            backgroundColor: "white",
+            marginBottom: "2rem",
+            padding: "0.75rem",
+            border: "1px solid #ccc",
+            borderRadius: "6px",
+            fontSize: "1.1rem",
+          }}
+        />
 
-      <textarea
-        name="description"
-        value={quiz.description || ""}
-        onChange={handleChange}
-        className="quiz-description"
-        placeholder="Quiz Instructions..."
-      />
-
+        <div>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "0.5rem",
+              fontWeight: 500,
+            }}
+          >
+            Description:
+          </label>
+          <ReactQuill
+            value={quiz.description || ""}
+            onChange={(value) =>
+              setQuiz((prev: any) => ({
+                ...prev,
+                description: value,
+              }))
+            }
+            modules={{
+              toolbar: [
+                [{ header: [1, 2, false] }],
+                ["bold", "italic", "underline", "strike"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["link", "image"],
+                ["clean"],
+              ],
+            }}
+            theme="snow"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "6px",
+              padding: "10px",
+            }}
+          />
+        </div>
+      </div>
       <div className="quiz-options">
         <label>
           Quiz Type:
-          <select name="quizType" value={quiz.quizType || "GRADED"} onChange={handleChange} className="form-select">
+          <select
+            name="quizType"
+            value={quiz.quizType || "GRADED"}
+            onChange={handleChange}
+            className="form-select"
+          >
             <option value="GRADED">Graded Quiz</option>
             <option value="PRACTICE">Practice Quiz</option>
             <option value="GRADED_SURVEY">Graded Survey</option>
@@ -49,7 +110,12 @@ export default function QuizEditorDetails({ quiz, setQuiz }: {
 
         <label>
           Assignment Group:
-          <select name="assignmentGroup" value={quiz.assignmentGroup || "Quizzes"} onChange={handleChange} className="form-select">
+          <select
+            name="assignmentGroup"
+            value={quiz.assignmentGroup || "Quizzes"}
+            onChange={handleChange}
+            className="form-select"
+          >
             <option value="Quizzes">Quizzes</option>
             <option value="Exams">Exams</option>
             <option value="Assignments">Assignments</option>

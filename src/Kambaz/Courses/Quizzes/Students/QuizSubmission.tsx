@@ -35,7 +35,7 @@ export default function SubmissionView(props: {
       case "MCQ":
         return typeof answer === "string"
           ? answer
-          : q.choices?.[answer] ?? "(Invalid choice)";
+          : (q.choices?.[answer] ?? "(Invalid choice)");
       case "TRUE_FALSE":
         return String(answer).toLowerCase() === "true" ? "True" : "False";
       case "FILL_BLANK":
@@ -54,7 +54,7 @@ export default function SubmissionView(props: {
       case "FILL_BLANK":
         return Array.isArray(q.acceptedAnswers)
           ? q.acceptedAnswers.join(", ")
-          : q.correctAnswer ?? "N/A";
+          : (q.correctAnswer ?? "N/A");
       default:
         return "N/A";
     }
@@ -72,12 +72,18 @@ export default function SubmissionView(props: {
       )}
 
       <h4>Submission</h4>
-      <p><strong>Score:</strong> {submission.score} points</p>
-      <p><strong>Attempt:</strong> #{submission.attemptNumber}</p>
+      <p>
+        <strong>Score:</strong> {submission.score} points
+      </p>
+      <p>
+        <strong>Attempt:</strong> #{submission.attemptNumber}
+      </p>
 
       <hr />
       {questions.map((q: any, index: number) => {
-        const studentAns = submission.answers.find((a: any) => a.questionId === q._id);
+        const studentAns = submission.answers.find(
+          (a: any) => a.questionId === q._id,
+        );
         const isCorrect = studentAns?.isCorrect;
 
         return (
@@ -90,15 +96,14 @@ export default function SubmissionView(props: {
                 <span className="text-danger">❌ Incorrect</span>
               )}
             </h5>
-            <p>{q.questionText}</p>
+            <div dangerouslySetInnerHTML={{ __html: q.questionText }} />
             <p>
               <strong>Your Answer:</strong>{" "}
               {formatAnswer(q, studentAns?.answer)}
             </p>
             {!isCorrect && (
               <p>
-                <strong>Correct Answer:</strong>{" "}
-                {getCorrectAnswer(q)}
+                <strong>Correct Answer:</strong> {getCorrectAnswer(q)}
               </p>
             )}
           </div>

@@ -57,9 +57,12 @@ export default function PreviewQuiz() {
     if (q.type === "MCQ") return q.correctChoiceIndex === ans;
     if (q.type === "TRUE_FALSE") return q.correctAnswer === ans;
     if (q.type === "FILL_BLANK") {
-      return q.acceptedAnswers?.some(
-        (correct) => correct.toLowerCase().trim() === ans?.toLowerCase().trim()
-      ) ?? false;
+      return (
+        q.acceptedAnswers?.some(
+          (correct) =>
+            correct.toLowerCase().trim() === ans?.toLowerCase().trim(),
+        ) ?? false
+      );
     }
     return false;
   };
@@ -71,7 +74,9 @@ export default function PreviewQuiz() {
   };
 
   const handleSubmit = () => {
-    const isIncomplete = questions.some((q) => answers[q._id] === undefined || answers[q._id] === "");
+    const isIncomplete = questions.some(
+      (q) => answers[q._id] === undefined || answers[q._id] === "",
+    );
     if (isIncomplete) {
       triggerError("Please answer all questions before submitting.");
       return;
@@ -141,7 +146,8 @@ export default function PreviewQuiz() {
         <div className="alert alert-success">Score: {score} points</div>
       )}
       <div className="preview-banner">
-        <BiError className="me-2" /> This is a preview of the published version of the quiz
+        <BiError className="me-2" /> This is a preview of the published version
+        of the quiz
       </div>
       {error && (
         <div className="alert alert-danger" role="alert">
@@ -162,11 +168,11 @@ export default function PreviewQuiz() {
           return (
             <div key={q._id} className="quiz-question-box">
               <div className="quiz-question-header">
-                <strong>Question {index + 1}</strong>
+                <strong>Question {index + 1}. {q.title}</strong>
                 <span>{q.points} pts</span>
               </div>
               <div className="quiz-question-body">
-                <p className="mb-3">{q.questionText}</p>
+                <div dangerouslySetInnerHTML={{ __html: q.questionText }} />
 
                 {q.type === "MCQ" && (
                   <MultipleChoiceQuestion
@@ -208,8 +214,6 @@ export default function PreviewQuiz() {
           );
         })}
       </form>
-
-      {renderButtons()}
     </div>
   );
 }

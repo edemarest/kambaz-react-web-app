@@ -1,7 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import * as client from "./client";
 
-export default function QuizOptions({ quiz, refresh }: { quiz: any; refresh: () => void }) {
+export default function QuizOptions({
+  quiz,
+  refresh,
+}: {
+  quiz: any;
+  refresh: () => void;
+}) {
   const { cid } = useParams();
   const navigate = useNavigate();
 
@@ -32,7 +38,9 @@ export default function QuizOptions({ quiz, refresh }: { quiz: any; refresh: () 
           <button
             className="dropdown-item"
             onClick={() =>
-              navigate(`/Kambaz/Courses/${cid}/Quizzes/${quiz._id}/Edit/Details`)
+              navigate(
+                `/Kambaz/Courses/${cid}/Quizzes/${quiz._id}/Edit/Details`,
+              )
             }
           >
             Edit

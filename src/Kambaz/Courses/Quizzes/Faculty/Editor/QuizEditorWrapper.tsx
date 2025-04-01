@@ -4,15 +4,22 @@ import QuizEditorDetails from "./DetailsEditor";
 import QuizEditorQuestions from "./QuestionEditor";
 import * as client from "../../client";
 import * as questionClient from "../../QuizQuestions/client";
-import '../../index.css';
+import "../../index.css";
+import { EditorProvider } from "react-simple-wysiwyg";
 
-export default function QuizEditorWrapper({ isNew = false }: { isNew?: boolean }) {
+export default function QuizEditorWrapper({
+  isNew = false,
+}: {
+  isNew?: boolean;
+}) {
   const { qid, cid } = useParams();
   const navigate = useNavigate();
   const createdOnce = useRef(false);
   const [quiz, setQuiz] = useState<any>(null);
   const [questions, setQuestions] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<"DETAILS" | "QUESTIONS">("DETAILS");
+  const [activeTab, setActiveTab] = useState<"DETAILS" | "QUESTIONS">(
+    "DETAILS",
+  );
   const [error, setError] = useState<string | null>(null);
 
   const defaultQuiz = {
@@ -44,7 +51,9 @@ export default function QuizEditorWrapper({ isNew = false }: { isNew?: boolean }
       if (isNew && cid && !createdOnce.current) {
         createdOnce.current = true;
         const created = await client.createQuiz(cid, defaultQuiz);
-        navigate(`/Kambaz/Courses/${cid}/Quizzes/${created._id}/Edit/Details`, { replace: true });
+        navigate(`/Kambaz/Courses/${cid}/Quizzes/${created._id}/Edit/Details`, {
+          replace: true,
+        });
         return;
       }
 
@@ -103,8 +112,12 @@ export default function QuizEditorWrapper({ isNew = false }: { isNew?: boolean }
   const isFormValid = () => {
     if (!quiz) return false;
     const { title, description } = quiz;
-    return typeof title === "string" && title.trim() !== "" &&
-           typeof description === "string" && description.trim() !== "";
+    return (
+      typeof title === "string" &&
+      title.trim() !== "" &&
+      typeof description === "string" &&
+      description.trim() !== ""
+    );
   };
 
   if (error) return <p className="text-danger">{error}</p>;
@@ -115,21 +128,53 @@ export default function QuizEditorWrapper({ isNew = false }: { isNew?: boolean }
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="text-danger">Quiz Editor</h4>
         <div>
-          <button className="btn btn-outline-secondary me-2" onClick={() => navigate(-1)}>Cancel</button>
-          <button className="btn btn-blue me-2" disabled={!isFormValid()} onClick={() => handleSave(false)}>Save</button>
-          <button className="btn btn-danger" disabled={!isFormValid()} onClick={() => handleSave(true)}>Save & Publish</button>
+          <button
+            className="btn btn-outline-secondary me-2"
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn btn-blue me-2"
+            disabled={!isFormValid()}
+            onClick={() => handleSave(false)}
+          >
+            Save
+          </button>
+          <button
+            className="btn btn-danger"
+            disabled={!isFormValid()}
+            onClick={() => handleSave(true)}
+          >
+            Save & Publish
+          </button>
         </div>
       </div>
 
       <div className="quiz-tabs">
-        <button className={activeTab === "DETAILS" ? "active" : ""} onClick={() => setActiveTab("DETAILS")}>Details</button>
-        <button className={activeTab === "QUESTIONS" ? "active" : ""} onClick={() => setActiveTab("QUESTIONS")}>Questions</button>
+        <button
+          className={activeTab === "DETAILS" ? "active" : ""}
+          onClick={() => setActiveTab("DETAILS")}
+        >
+          Details
+        </button>
+        <button
+          className={activeTab === "QUESTIONS" ? "active" : ""}
+          onClick={() => setActiveTab("QUESTIONS")}
+        >
+          Questions
+        </button>
       </div>
 
       {activeTab === "DETAILS" ? (
-        <QuizEditorDetails quiz={quiz} setQuiz={setQuiz} />
+        <EditorProvider>
+          <QuizEditorDetails quiz={quiz} setQuiz={setQuiz} />
+        </EditorProvider>
       ) : (
-        <QuizEditorQuestions questions={questions} setQuestions={setQuestions} />
+        <QuizEditorQuestions
+          questions={questions}
+          setQuestions={setQuestions}
+        />
       )}
     </div>
   );

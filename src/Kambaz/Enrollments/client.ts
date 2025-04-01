@@ -18,7 +18,7 @@ export const getUserEnrollments = async () => {
 export const enrollInCourse = async (courseId: string) => {
   const response = await axiosWithCredentials.post(
     `${USERS_API}/current/courses/${courseId}`,
-    {}
+    {},
   );
   return response.data;
 };

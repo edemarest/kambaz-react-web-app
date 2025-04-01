@@ -21,7 +21,7 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
       try {
         const result = await submissionClient.findSubmissionsForUserQuiz(qid);
         if (result) setSubmission(result);
-      } catch (err) { }
+      } catch (err) {}
     }
     const qs = await questionClient.findQuestionsForQuiz(qid);
     setQuestions(qs);
@@ -70,30 +70,42 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
         <div>
           {isFaculty ? (
             <>
-              <button className="btn btn-danger me-2" onClick={async () => {
-                if (window.confirm("Are you sure you want to delete this quiz?")) {
-                  await client.deleteQuiz(qid);
-                  navigate(`/Kambaz/Courses/${cid}/Quizzes`);
-                }
-              }}>
+              <button
+                className="btn btn-danger me-2"
+                onClick={async () => {
+                  if (
+                    window.confirm("Are you sure you want to delete this quiz?")
+                  ) {
+                    await client.deleteQuiz(qid);
+                    navigate(`/Kambaz/Courses/${cid}/Quizzes`);
+                  }
+                }}
+              >
                 Delete Quiz
               </button>
               <button
                 className="btn btn-outline-primary me-2"
-                onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/Preview`)}
+                onClick={() =>
+                  navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/Preview`)
+                }
               >
                 Preview Quiz
               </button>
               <button
                 className="btn btn-outline-primary me-2"
-                onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/Edit/Details`)}
+                onClick={() =>
+                  navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/Edit/Details`)
+                }
               >
                 Edit Quiz
               </button>
               <button
                 className={`btn me-2 ${quiz.published ? "btn-outline-primary" : "btn-success"}`}
                 onClick={async () => {
-                  await client.updateQuiz(qid, { ...quiz, published: !quiz.published });
+                  await client.updateQuiz(qid, {
+                    ...quiz,
+                    published: !quiz.published,
+                  });
                   loadQuiz();
                 }}
               >
@@ -105,7 +117,9 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
               <button
                 className="btn btn-danger me-2"
                 disabled={!canTake}
-                onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/Take`)}
+                onClick={() =>
+                  navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/Take`)
+                }
               >
                 Take Quiz
               </button>
@@ -118,60 +132,89 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
       </div>
       <hr />
       <h2 className="mb-1">{quiz.title}</h2>
-      <p className="text-muted">{quiz.description}</p>
+      <div
+        className="text-muted"
+        dangerouslySetInnerHTML={{ __html: quiz.description }}
+      />
       <hr />
       <table className="table table-borderless w-auto mb-4">
         <tbody>
           <tr>
-            <td><strong>Total Points</strong></td>
+            <td>
+              <strong>Total Points</strong>
+            </td>
             <td>{totalPoints}</td>
           </tr>
           <tr>
-            <td><strong>Quiz Type</strong></td>
+            <td>
+              <strong>Quiz Type</strong>
+            </td>
             <td>{quiz.quizType}</td>
           </tr>
           <tr>
-            <td><strong>Assignment Group</strong></td>
+            <td>
+              <strong>Assignment Group</strong>
+            </td>
             <td>{quiz.assignmentGroup}</td>
           </tr>
           <tr>
-            <td><strong>Shuffle Answers</strong></td>
+            <td>
+              <strong>Shuffle Answers</strong>
+            </td>
             <td>{quiz.shuffleAnswers ? "Yes" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>Time Limit</strong></td>
+            <td>
+              <strong>Time Limit</strong>
+            </td>
             <td>{quiz.hasTimeLimit ? `${quiz.timeLimit} Minutes` : "None"}</td>
           </tr>
           <tr>
-            <td><strong>Multiple Attempts</strong></td>
+            <td>
+              <strong>Multiple Attempts</strong>
+            </td>
             <td>{quiz.multipleAttempts ? "Yes" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>Show Correct Answers</strong></td>
+            <td>
+              <strong>Show Correct Answers</strong>
+            </td>
             <td>{quiz.showCorrectAnswers ? "Immediately" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>One Question at a Time</strong></td>
+            <td>
+              <strong>One Question at a Time</strong>
+            </td>
             <td>{quiz.oneQuestionAtATime ? "Yes" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>Webcam Required</strong></td>
+            <td>
+              <strong>Webcam Required</strong>
+            </td>
             <td>{quiz.webcamRequired ? "Yes" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>Lock Questions After Answering</strong></td>
+            <td>
+              <strong>Lock Questions After Answering</strong>
+            </td>
             <td>{quiz.lockQuestionsAfterAnswering ? "Yes" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>Access Code</strong></td>
+            <td>
+              <strong>Access Code</strong>
+            </td>
             <td>{quiz.accessCode || "None"}</td>
           </tr>
           <tr>
-            <td><strong>Published</strong></td>
+            <td>
+              <strong>Published</strong>
+            </td>
             <td>{quiz.published ? "Yes" : "No"}</td>
           </tr>
           <tr>
-            <td><strong>Total Questions</strong></td>
+            <td>
+              <strong>Total Questions</strong>
+            </td>
             <td>{questions.length}</td>
           </tr>
         </tbody>
@@ -195,11 +238,7 @@ export default function QuizDetails({ currentUser }: { currentUser: any }) {
       </table>
       <hr />
       {submission && (
-        <SubmissionView
-          quiz={quiz}
-          submission={submission}
-          embedded={true}
-        />
+        <SubmissionView quiz={quiz} submission={submission} embedded={true} />
       )}
     </div>
   );

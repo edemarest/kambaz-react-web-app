@@ -45,7 +45,9 @@ interface Question {
 export default function Quiz({ currentUser }: { currentUser: any }) {
   const { cid } = useParams();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [questionsMap, setQuestionsMap] = useState<{ [key: string]: Question[] }>({});
+  const [questionsMap, setQuestionsMap] = useState<{
+    [key: string]: Question[];
+  }>({});
 
   const fetchQuizzes = async () => {
     try {
@@ -85,9 +87,15 @@ export default function Quiz({ currentUser }: { currentUser: any }) {
         }
       />
       <Route path="new" element={<QuizEditorWrapper isNew={true} />} />
-      <Route path=":qid/Edit/Details" element={<QuizEditorWrapper isNew={false} />} />
+      <Route
+        path=":qid/Edit/Details"
+        element={<QuizEditorWrapper isNew={false} />}
+      />
       <Route path=":qid/Preview" element={<QuizPreview />} />
-      <Route path=":qid/Take" element={<TakeQuiz currentUser={currentUser} />} />
+      <Route
+        path=":qid/Take"
+        element={<TakeQuiz currentUser={currentUser} />}
+      />
       <Route path=":qid/Submission" element={<SubmissionView />} />
       <Route path=":qid" element={<QuizDetails currentUser={currentUser} />} />
     </Routes>

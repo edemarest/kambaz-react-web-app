@@ -49,7 +49,9 @@ export default function TakeQuiz({ currentUser }: { currentUser: any }) {
   };
 
   const isFormComplete = () => {
-    return questions.every((q) => answers[q._id] !== undefined && answers[q._id] !== "");
+    return questions.every(
+      (q) => answers[q._id] !== undefined && answers[q._id] !== "",
+    );
   };
 
   const handleSubmit = async () => {
@@ -57,7 +59,7 @@ export default function TakeQuiz({ currentUser }: { currentUser: any }) {
       await submissionClient.submitQuizAnswers(
         qid as string,
         currentUser._id,
-        answers
+        answers,
       );
       navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}`);
     } catch (err) {
@@ -87,12 +89,11 @@ export default function TakeQuiz({ currentUser }: { currentUser: any }) {
         {questions.map((q, index) => (
           <div key={q._id} className="quiz-question-box">
             <div className="quiz-question-header">
-              <strong>Question {index + 1}</strong>
+              <strong>Question {index + 1}. {q.title}</strong>
               <span>{q.points} pts</span>
             </div>
             <div className="quiz-question-body">
-              <p className="mb-3">{q.questionText}</p>
-
+              <div dangerouslySetInnerHTML={{ __html: q.questionText }} />
               {q.type === "MCQ" && (
                 <MultipleChoiceQuestion
                   question={q}

@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import MCQEditor from "./MCQEditor";
 import TrueFalseEditor from "./TrueFalseEditor";
-import '../../index.css';
+import "../../index.css";
 import FillinTheBlankEditor from "./FillinTheBlankEditor";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 const questionTypes = [
   { label: "Multiple Choice", value: "MCQ" },
   { label: "True/False", value: "TRUE_FALSE" },
@@ -22,7 +25,10 @@ interface Question {
   acceptedAnswers?: string[];
 }
 
-export default function QuestionEditor({ questions, setQuestions }: {
+export default function QuestionEditor({
+  questions,
+  setQuestions,
+}: {
   questions: Question[];
   setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
 }) {
@@ -54,7 +60,7 @@ export default function QuestionEditor({ questions, setQuestions }: {
     setQuestions([...questions, newQuestion]);
     setEditIndex(questions.length);
     setTempQuestion(newQuestion);
-  };  
+  };
 
   const handleSave = () => {
     if (editIndex !== null && tempQuestion) {
@@ -69,9 +75,14 @@ export default function QuestionEditor({ questions, setQuestions }: {
       setEditIndex(null);
       setTempQuestion(null);
     }
-  };  
+  };
 
-  const isSaveDisabled = !tempQuestion || !tempQuestion.title || !tempQuestion.questionText || !tempQuestion.type || tempQuestion.points <= 0;
+  const isSaveDisabled =
+    !tempQuestion ||
+    !tempQuestion.title ||
+    !tempQuestion.questionText ||
+    !tempQuestion.type ||
+    tempQuestion.points <= 0;
 
   const totalPoints = questions.reduce((sum, q) => sum + (q.points || 0), 0);
 
@@ -79,10 +90,15 @@ export default function QuestionEditor({ questions, setQuestions }: {
     <div className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5>Quiz Questions</h5>
-        <span><strong>Points:</strong> {totalPoints}</span>
+        <span>
+          <strong>Points:</strong> {totalPoints}
+        </span>
       </div>
 
-      <button className="btn btn-outline-secondary mb-3" onClick={handleAddQuestion}>
+      <button
+        className="btn btn-outline-secondary mb-3"
+        onClick={handleAddQuestion}
+      >
         + New Question
       </button>
 
@@ -96,12 +112,17 @@ export default function QuestionEditor({ questions, setQuestions }: {
               <input
                 className="form-control mb-2"
                 value={tempQuestion?.title || ""}
-                onChange={(e) => handleUpdate({ ...tempQuestion!, title: e.target.value })}
+                onChange={(e) =>
+                  handleUpdate({ ...tempQuestion!, title: e.target.value })
+                }
               />
-              <textarea
-                className="form-control mb-2"
+              <ReactQuill
+                className="mb-4"
+                theme="snow"
                 value={tempQuestion?.questionText || ""}
-                onChange={(e) => handleUpdate({ ...tempQuestion!, questionText: e.target.value })}
+                onChange={(value) =>
+                  handleUpdate({ ...tempQuestion!, questionText: value })
+                }
               />
               <label>Type:</label>
               <select
@@ -121,17 +142,28 @@ export default function QuestionEditor({ questions, setQuestions }: {
                 type="number"
                 className="form-control mb-2"
                 value={tempQuestion?.points || 0}
-                onChange={(e) => handleUpdate({ ...tempQuestion!, points: Number(e.target.value) })}
+                onChange={(e) =>
+                  handleUpdate({
+                    ...tempQuestion!,
+                    points: Number(e.target.value),
+                  })
+                }
               />
 
               {tempQuestion?.type === "MCQ" && (
                 <MCQEditor question={tempQuestion} onChange={handleUpdate} />
               )}
               {tempQuestion?.type === "TRUE_FALSE" && (
-                <TrueFalseEditor question={tempQuestion} onChange={handleUpdate} />
+                <TrueFalseEditor
+                  question={tempQuestion}
+                  onChange={handleUpdate}
+                />
               )}
               {tempQuestion?.type === "FILL_BLANK" && (
-                <FillinTheBlankEditor question={tempQuestion} onChange={handleUpdate} />
+                <FillinTheBlankEditor
+                  question={tempQuestion}
+                  onChange={handleUpdate}
+                />
               )}
               <div className="d-flex gap-2 mt-2">
                 <button
@@ -145,22 +177,36 @@ export default function QuestionEditor({ questions, setQuestions }: {
             </>
           ) : (
             <>
-              <h6>Q{index + 1}. {q.title}</h6>
+              <h6>
+                Q{index + 1}. {q.title}
+              </h6>
               <p>{q.questionText}</p>
-              <small>Type: {q.type} | {q.points} pts</small>
+              <small>
+                Type: {q.type} | {q.points} pts
+              </small>
               <div className="d-flex gap-2 mt-2">
-                <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                  setEditIndex(index);
-                  setTempQuestion(q);
-                }}>
+                <button
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => {
+                    setEditIndex(index);
+                    setTempQuestion(q);
+                  }}
+                >
                   Edit
                 </button>
-                <button className="btn btn-sm btn-outline-danger" onClick={async () => {
-                  if (!q._id) return;
-                  if (window.confirm("Are you sure you want to delete this question?")) {
-                    setQuestions(questions.filter((_, i) => i !== index));
-                  }
-                }}>
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={async () => {
+                    if (!q._id) return;
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this question?",
+                      )
+                    ) {
+                      setQuestions(questions.filter((_, i) => i !== index));
+                    }
+                  }}
+                >
                   Delete
                 </button>
               </div>

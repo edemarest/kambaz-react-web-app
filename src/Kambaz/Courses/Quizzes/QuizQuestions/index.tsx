@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as client from "./client";
-import '../index.css';
+import "../index.css";
 
 interface Question {
   _id: string;
@@ -34,7 +34,8 @@ export default function QuizQuestions() {
   }, [qid]);
 
   if (error) return <p className="text-danger">{error}</p>;
-  if (!questions.length) return <p>No questions yet. Click "New Question" to add one.</p>;
+  if (!questions.length)
+    return <p>No questions yet. Click "New Question" to add one.</p>;
 
   return (
     <div>
@@ -46,7 +47,7 @@ export default function QuizQuestions() {
             <strong>{q.title}</strong> ({q.points} pts)
             <br />
             Type: {q.type} <br />
-            {q.questionText}
+            <div dangerouslySetInnerHTML={{ __html: q.questionText }} />
           </li>
         ))}
       </ul>

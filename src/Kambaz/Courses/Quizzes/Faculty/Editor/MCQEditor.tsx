@@ -8,7 +8,9 @@ export default function MCQEditor({
   onChange: (updated: any) => void;
 }) {
   const [choices, setChoices] = useState<string[]>(question.choices || []);
-  const [correctIndex, setCorrectIndex] = useState<number>(question.correctChoiceIndex ?? -1);
+  const [correctIndex, setCorrectIndex] = useState<number>(
+    question.correctChoiceIndex ?? -1,
+  );
 
   useEffect(() => {
     onChange({ ...question, choices, correctChoiceIndex: correctIndex });
@@ -21,7 +23,8 @@ export default function MCQEditor({
   };
 
   const addChoice = () => setChoices([...choices, ""]);
-  const removeChoice = (index: number) => setChoices(choices.filter((_, i) => i !== index));
+  const removeChoice = (index: number) =>
+    setChoices(choices.filter((_, i) => i !== index));
 
   return (
     <div>
@@ -51,7 +54,9 @@ export default function MCQEditor({
           </button>
         </div>
       ))}
-      <button className="btn btn-sm btn-outline-primary" onClick={addChoice}>+ Add Choice</button>
+      <button className="btn btn-sm btn-outline-primary" onClick={addChoice}>
+        + Add Choice
+      </button>
     </div>
   );
 }
